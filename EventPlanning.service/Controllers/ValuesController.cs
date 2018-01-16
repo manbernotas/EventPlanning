@@ -6,6 +6,13 @@ namespace EventPlanning.service.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly DAL.EventContext context;
+
+        public ValuesController(DAL.EventContext context)
+        {
+            this.context = context;
+        }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()

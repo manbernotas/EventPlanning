@@ -15,7 +15,7 @@ namespace EventPlanning.DAL
         public string Address { get; set; }
         public int MinParticipants { get; set; }
         public int MaxParticipants { get; set; }
-        public List<IEventType> Games { get; set; }
+        public List<Activity> Activities { get; set; }
         public List<Participant> Participants { get; set; }
     }
 }

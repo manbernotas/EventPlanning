@@ -8,13 +8,15 @@ namespace EventPlanning.DAL
         {
         }
 
-        public DbSet<IEventType> BoardGame { get; set; }
+        public DbSet<Activity> Activity { get; set; }
+        public DbSet<ActivityType> ActivityType { get; set; }
         public DbSet<Participant> User { get; set; }
         public DbSet<Event> Event { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<IEventType>();
+            modelBuilder.Entity<ActivityType>();
+            modelBuilder.Entity<Activity>();
             modelBuilder.Entity<Participant>();
             modelBuilder.Entity<Event>();
         }
