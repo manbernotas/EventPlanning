@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPlanning.service", "EventPlanning.service\EventPlanning.service.csproj", "{745E8028-D9DA-4603-B707-8D5D32CB6B0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.service", "EventPlanning.service\EventPlanning.service.csproj", "{745E8028-D9DA-4603-B707-8D5D32CB6B0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPlanning.DAL", "EventPlanning.DAL\EventPlanning.DAL.csproj", "{4E7F83A7-0AD7-48F9-99E1-895471A91750}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.DAL", "EventPlanning.DAL\EventPlanning.DAL.csproj", "{4E7F83A7-0AD7-48F9-99E1-895471A91750}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.BL", "EventPlanning.BL\EventPlanning.BL.csproj", "{B33BD18B-2D79-443D-8E3A-AC5F74223DF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPlanning.Model", "EventPlanning.DTO\EventPlanning.Model.csproj", "{C56936D2-D293-42DA-8709-6D84998EC991}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{4E7F83A7-0AD7-48F9-99E1-895471A91750}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E7F83A7-0AD7-48F9-99E1-895471A91750}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E7F83A7-0AD7-48F9-99E1-895471A91750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B33BD18B-2D79-443D-8E3A-AC5F74223DF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B33BD18B-2D79-443D-8E3A-AC5F74223DF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B33BD18B-2D79-443D-8E3A-AC5F74223DF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B33BD18B-2D79-443D-8E3A-AC5F74223DF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C56936D2-D293-42DA-8709-6D84998EC991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C56936D2-D293-42DA-8709-6D84998EC991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C56936D2-D293-42DA-8709-6D84998EC991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C56936D2-D293-42DA-8709-6D84998EC991}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using EventPlanning.BL;
+using EventPlanning.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPlanning.service.Controllers
@@ -7,30 +9,63 @@ namespace EventPlanning.service.Controllers
     public class ValuesController : Controller
     {
         private readonly DAL.EventContext context;
+        private UserManager userManager;
+        private EventManager eventManager;
 
         public ValuesController(DAL.EventContext context)
         {
             this.context = context;
+            userManager = new UserManager(this.context);
+            eventManager = new EventManager(this.context);
         }
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<DAL.User> GetUsers()
         {
-            return new string[] { "value1", "value2" };
+            return userManager.GetUsers();
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // POST api/values/validate-user
+        /// <summary>
+        /// Validates if password is valid for user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// <remarks>
+        ///
+        /*
         {
-            return "value";
+            "name":"Mantas",
+            "password":"test"
+        }
+        */
+        /// </remarks>
+        [HttpPost("validate-user")]
+        public bool IsPasswordValid([FromBody]UserData user)
+        {
+            return userManager.IsPasswordValid(user);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
+        // POST api/values/create-user
+        /// <summary>
+        /// Creates new user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// <remarks>
+        ///
+        /*
         {
+            "name":"Mantas",
+            "password":"test"
+        }
+        */
+        /// </remarks>
+        [HttpPost("create-user")]
+        public IActionResult CreateUser([FromBody]UserData user)
+        {
+            return userManager.CreateUser(user) ? StatusCode(200) : StatusCode(400);
         }
 
         // PUT api/values/5

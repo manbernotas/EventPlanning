@@ -16,6 +16,6 @@ namespace EventPlanning.DAL
         public int MinParticipants { get; set; }
         public int MaxParticipants { get; set; }
         public List<Activity> Activities { get; set; }
-        public List<Participant> Participants { get; set; }
+        public List<User> Participants { get; set; }
     }
 }

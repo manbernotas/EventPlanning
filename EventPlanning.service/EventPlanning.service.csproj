@@ -17,7 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EventPlanning.BL\EventPlanning.BL.csproj" />
     <ProjectReference Include="..\EventPlanning.DAL\EventPlanning.DAL.csproj" />
+    <ProjectReference Include="..\EventPlanning.DTO\EventPlanning.Model.csproj" />
   </ItemGroup>
 
 </Project>
