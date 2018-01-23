@@ -11,11 +11,11 @@ namespace EventPlanning.DAL
 
         public string Name { get; set; }
         public DateTime Date { get; set; }
-        public DateTime Duration { get; set; }
+        public string Duration { get; set; }
         public string Address { get; set; }
         public int MinParticipants { get; set; }
         public int MaxParticipants { get; set; }
-        public List<Activity> Activities { get; set; }
-        public List<User> Participants { get; set; }
+        public List<EventActivity> Activities { get; set; }
+        public List<Participant> Participants { get; set; }
     }
 }

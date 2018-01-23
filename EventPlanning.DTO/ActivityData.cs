@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace EventPlanning.DAL
+namespace EventPlanning.Model
 {
-    public class Activity
+    public class ActivityData
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int MinParticipants { get; set; }
         public int MaxParticipants { get; set; }
-        public int? ActivityTypeId { get; set; }
+        public string ActivityType { get; set; }
     }
 }

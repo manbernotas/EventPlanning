@@ -15,19 +15,24 @@ namespace EventPlanning.DAL
             this.context = context;
         }
 
-        public List<ActivityType> GetActivityTypes()
+        public IQueryable<Activity> GetActivities()
         {
-            return context.ActivityType.ToList();
+            return context.Activity;
         }
 
-        public List<Event> GetEvents()
+        public IQueryable<ActivityType> GetActivityTypes()
         {
-            return context.Event.ToList();
+            return context.ActivityType;
         }
 
-        public List<User> GetUsers()
+        public IQueryable<Event> GetEvents()
         {
-            return context.User.ToList();
+            return context.Event;
+        }
+
+        public IQueryable<Event> GetEventsWithActivities()
+        {
+            return context.Event.Include(x => x.Activities);
         }
 
         public bool SaveActivityType(ActivityType activityType)
@@ -35,21 +40,6 @@ namespace EventPlanning.DAL
             try
             {
                 context.ActivityType.Add(activityType);
-                context.SaveChanges();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public bool SaveUser(User user)
-        {
-            try
-            {
-                context.User.Add(user);
                 context.SaveChanges();
             }
             catch (DbUpdateException)
@@ -67,7 +57,7 @@ namespace EventPlanning.DAL
                 context.Activity.Add(activity);
                 context.SaveChanges();
             }
-            catch (Exception)
+            catch (DbUpdateException)
             {
                 return false;
             }
@@ -75,14 +65,29 @@ namespace EventPlanning.DAL
             return true;
         }
 
-        public bool SaveEvent(Event @event)
+        public bool SaveEvent(Event newEvent)
         {
             try
             {
-                context.Event.Add(@event);
+                context.Event.Add(newEvent);
                 context.SaveChanges();
             }
-            catch (Exception)
+            catch (DbUpdateException) 
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool SaveEventActivities(List<EventActivity> eventActivities)
+        {
+            try
+            {
+                context.EventActivity.AddRange(eventActivities);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
             {
                 return false;
             }

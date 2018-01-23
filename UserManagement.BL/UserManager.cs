@@ -1,21 +1,21 @@
-﻿using EventPlanning.DAL;
-using EventPlanning.Model;
+﻿using System;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using UserManagement.DAL;
+using Model;
 
-namespace EventPlanning.BL
+namespace UserManagement.BL
 {
     public class UserManager
     {
-        private EventContext context;
+        private UserContext context;
 
         private Repository repository;
 
-        public UserManager(EventContext context)
+        public UserManager(UserContext context)
         {
             this.context = context;
             repository = new Repository(this.context);
@@ -27,7 +27,7 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public List<User> GetUsers()
         {
-            return repository.GetUsers();
+            return repository.GetUsers().ToList();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace EventPlanning.BL
 
             return Convert.ToBase64String(salt);
         }
-        
+
         /// <summary>
         /// Generates password hash
         /// </summary>
@@ -76,8 +76,7 @@ namespace EventPlanning.BL
 
             if (userInDatabase != null)
             {
-                var salt = userInDatabase.Salt;
-                var passwordHash = GetPasswordHash(user.Password, salt);
+                var passwordHash = GetPasswordHash(user.Password, userInDatabase.Salt);
 
                 if (userInDatabase.Password == passwordHash)
                 {
@@ -95,23 +94,28 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public bool CreateUser(UserData user)
         {
-            var salt = GetSalt();
-            var passwordHash = GetPasswordHash(user.Password, salt);
-            var newUser = new User()
+            if (repository.GetUsers().FirstOrDefault(u => u.UserName == user.Name) == null)
             {
-                UserName = user.Name,
-                Password = passwordHash,
-                Salt = salt,
-            };
+                var salt = GetSalt();
+                var passwordHash = GetPasswordHash(user.Password, salt);
+                var newUser = new User()
+                {
+                    UserName = user.Name,
+                    Password = passwordHash,
+                    Salt = salt,
+                };
 
-            try
-            {
-                return repository.SaveUser(newUser);
+                try
+                {
+                    return repository.SaveUser(newUser);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
-            catch (Exception)
-            {
-                return false;
-            }
+
+            return false;
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace EventPlanning.Model
 {
-    public class UserData
+    public class ActivityTypeData
     {
         public string Name { get; set; }
-        public string Password { get; set; }
     }
 }

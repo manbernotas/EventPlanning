@@ -4,8 +4,4 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EventPlanning.DAL\EventPlanning.DAL.csproj" />
-  </ItemGroup>
-
 </Project>

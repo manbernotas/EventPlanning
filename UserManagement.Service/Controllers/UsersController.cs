@@ -1,32 +1,30 @@
 ﻿using System.Collections.Generic;
-using EventPlanning.BL;
-using EventPlanning.Model;
 using Microsoft.AspNetCore.Mvc;
+using Model;
+using UserManagement.BL;
 
-namespace EventPlanning.service.Controllers
+namespace UserManagement.Service.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class UsersController : Controller
     {
-        private readonly DAL.EventContext context;
+        private readonly DAL.UserContext context;
         private UserManager userManager;
-        private EventManager eventManager;
 
-        public ValuesController(DAL.EventContext context)
+        public UsersController(DAL.UserContext context)
         {
             this.context = context;
             userManager = new UserManager(this.context);
-            eventManager = new EventManager(this.context);
         }
 
-        // GET api/values
+        // GET api/users
         [HttpGet]
         public List<DAL.User> GetUsers()
         {
             return userManager.GetUsers();
         }
 
-        // POST api/values/validate-user
+        // POST api/users/validate-user
         /// <summary>
         /// Validates if password is valid for user
         /// </summary>
@@ -47,7 +45,7 @@ namespace EventPlanning.service.Controllers
             return userManager.IsPasswordValid(user);
         }
 
-        // POST api/values/create-user
+        // POST api/users/create-user
         /// <summary>
         /// Creates new user
         /// </summary>
@@ -66,18 +64,6 @@ namespace EventPlanning.service.Controllers
         public IActionResult CreateUser([FromBody]UserData user)
         {
             return userManager.CreateUser(user) ? StatusCode(200) : StatusCode(400);
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

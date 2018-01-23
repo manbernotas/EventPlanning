@@ -10,14 +10,16 @@ namespace EventPlanning.DAL
 
         public DbSet<Activity> Activity { get; set; }
         public DbSet<ActivityType> ActivityType { get; set; }
-        public DbSet<User> User { get; set; }
+        public DbSet<Participant> Particiant { get; set; }
         public DbSet<Event> Event { get; set; }
+        public DbSet<EventActivity> EventActivity { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ActivityType>();
             modelBuilder.Entity<Activity>();
-            modelBuilder.Entity<User>().HasKey(user => user.UserName);
+            modelBuilder.Entity<EventActivity>();
+            modelBuilder.Entity<Participant>();
             modelBuilder.Entity<Event>();
         }
     }
