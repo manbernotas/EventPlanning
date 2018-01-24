@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model;
+using UserManagement.Model;
 using UserManagement.DAL;
 
 namespace UserManagement.BL.Tests
@@ -71,11 +71,11 @@ namespace UserManagement.BL.Tests
                 Password = "test",
             };
 
-            Assert.AreEqual(true, userManager.IsPasswordValid(user));
+            Assert.IsTrue(userManager.IsPasswordValid(user));
         }
 
         [TestMethod]
-        public void IsPasswordValidFail()
+        public void IsPasswordValidFailWrongPassword()
         {
             var user = new UserData()
             {
@@ -83,13 +83,18 @@ namespace UserManagement.BL.Tests
                 Password = "test2",
             };
 
+            Assert.IsFalse(userManager.IsPasswordValid(user));
+        }
+
+        [TestMethod]
+        public void IsPasswordValidFailNoPassword()
+        {
             var user2 = new UserData()
             {
                 Name = "Test1",
             };
 
-            Assert.AreEqual(false, userManager.IsPasswordValid(user));
-            Assert.AreEqual(false, userManager.IsPasswordValid(user));
+            Assert.IsFalse(userManager.IsPasswordValid(user2));
         }
 
         [TestMethod]
@@ -101,7 +106,7 @@ namespace UserManagement.BL.Tests
                 Password = "Test",
             };
 
-            Assert.AreEqual(true, userManager.CreateUser(user));
+            Assert.IsTrue(userManager.CreateUser(user));
         }
 
         [TestMethod]
@@ -113,7 +118,7 @@ namespace UserManagement.BL.Tests
                 Password = "Test",
             };
 
-            Assert.AreEqual(false, userManager.CreateUser(user));
+            Assert.IsFalse(userManager.CreateUser(user));
         }
     }
 }

@@ -13,15 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Model", "Even
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.BL.Tests", "EventPlaning.BL.Tests\EventPlanning.BL.Tests.csproj", "{C1F9EB34-DE63-4DFE-BF73-AFBA96ED0DC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Service", "UserManagement.Service\UserManagement.Service.csproj", "{A2BA29DA-63F0-4BC2-BF49-09E4863CBF8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.Service", "UserManagement.Service\UserManagement.Service.csproj", "{A2BA29DA-63F0-4BC2-BF49-09E4863CBF8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.DAL", "UserManagement.DAL\UserManagement.DAL.csproj", "{D7B1FAF4-008A-4F75-8FB0-948FE4EC3784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.DAL", "UserManagement.DAL\UserManagement.DAL.csproj", "{D7B1FAF4-008A-4F75-8FB0-948FE4EC3784}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.BL", "UserManagement.BL\UserManagement.BL.csproj", "{122D1B0C-72D1-40CC-82AE-642830D29C00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.BL", "UserManagement.BL\UserManagement.BL.csproj", "{122D1B0C-72D1-40CC-82AE-642830D29C00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{031F7CA3-7530-402D-B2A6-5DC54839BD42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.Model", "Model\UserManagement.Model.csproj", "{031F7CA3-7530-402D-B2A6-5DC54839BD42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.BL.Tests", "UserManagement.BL.Tests\UserManagement.BL.Tests.csproj", "{8643D7A9-5D9B-4F42-82E9-1761BBDF32B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.BL.Tests", "UserManagement.BL.Tests\UserManagement.BL.Tests.csproj", "{8643D7A9-5D9B-4F42-82E9-1761BBDF32B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

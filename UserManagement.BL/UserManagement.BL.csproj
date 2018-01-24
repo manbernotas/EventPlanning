@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Model\Model.csproj" />
+    <ProjectReference Include="..\Model\UserManagement.Model.csproj" />
     <ProjectReference Include="..\UserManagement.DAL\UserManagement.DAL.csproj" />
   </ItemGroup>
 

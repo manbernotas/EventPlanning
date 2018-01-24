@@ -28,6 +28,15 @@ namespace EventPlanning.BL
         }
 
         /// <summary>
+        /// Returns all events with activities
+        /// </summary>
+        /// <returns></returns>
+        public List<Event> GetEventsWithActivities()
+        {
+            return repository.GetEventsWithActivities().ToList();
+        }
+
+        /// <summary>
         /// Creates new event
         /// </summary>
         /// <param name="eventData"></param>
@@ -71,7 +80,7 @@ namespace EventPlanning.BL
         /// </summary>
         /// <param name="activity"></param>
         /// <returns></returns>
-        private int? GetActivityId(string activity)
+        public int? GetActivityId(string activity)
         {
             return repository.GetActivities().FirstOrDefault(a => a.Name == activity)?.Id;
         }
@@ -81,7 +90,7 @@ namespace EventPlanning.BL
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        private int? GetEventId(string name)
+        public int? GetEventId(string name)
         {
             return repository.GetEvents().FirstOrDefault(e => e.Name == name)?.Id;
         }
@@ -104,6 +113,29 @@ namespace EventPlanning.BL
             };
 
             return newEvent;
+        }
+
+        /// <summary>
+        /// Creates participant
+        /// </summary>
+        /// <param name="participant"></param>
+        /// <returns></returns>
+        public bool ParticipateInEvent(ParticipantData participant)
+        {
+            var newParticipant = new Participant()
+            {
+                EventId = participant.EventId,
+                UserId = participant.UserId,
+            };
+
+            try
+            {
+                return repository.SaveParticipant(newParticipant);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>

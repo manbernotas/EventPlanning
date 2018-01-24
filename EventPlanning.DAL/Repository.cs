@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace EventPlanning.DAL
 {
@@ -17,7 +15,7 @@ namespace EventPlanning.DAL
 
         public IQueryable<Activity> GetActivities()
         {
-            return context.Activity;
+            return context.Activity.Include(a => a.ActivityType);
         }
 
         public IQueryable<ActivityType> GetActivityTypes()
@@ -32,7 +30,7 @@ namespace EventPlanning.DAL
 
         public IQueryable<Event> GetEventsWithActivities()
         {
-            return context.Event.Include(x => x.Activities);
+            return context.Event.Include(e => e.Activities);
         }
 
         public bool SaveActivityType(ActivityType activityType)
@@ -85,6 +83,21 @@ namespace EventPlanning.DAL
             try
             {
                 context.EventActivity.AddRange(eventActivities);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool SaveParticipant(Participant participant)
+        {
+            try
+            {
+                context.Particiant.Add(participant);
                 context.SaveChanges();
             }
             catch (DbUpdateException)

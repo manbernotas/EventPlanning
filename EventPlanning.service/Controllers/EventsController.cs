@@ -21,7 +21,7 @@ namespace EventPlanning.service.Controllers
         [HttpGet]
         public List<DAL.Event> GetEvents()
         {
-            return eventManager.GetEvents();
+            return eventManager.GetEventsWithActivities();
         }
 
         // GET api/events/activities
@@ -103,6 +103,25 @@ namespace EventPlanning.service.Controllers
         public IActionResult CreateActivityType([FromBody]ActivityTypeData activityTypeData)
         {
             return eventManager.CreateActivityType(activityTypeData) ? StatusCode(200) : StatusCode(400);
+        }
+
+        /// <summary>
+        /// Creates new participant
+        /// </summary>
+        /// <param name="participant"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /*
+        {
+            "userid": 1,
+            "eventid: 1
+        }
+        */
+        /// </remarks>
+        [HttpPost("participate")]
+        public IActionResult ParticipateInEvent([FromBody]ParticipantData participant)
+        {
+            return eventManager.ParticipateInEvent(participant) ? StatusCode(200) : StatusCode(400);
         }
     }
 }

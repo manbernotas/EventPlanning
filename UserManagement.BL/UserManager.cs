@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using UserManagement.DAL;
-using Model;
+using UserManagement.Model;
 
 namespace UserManagement.BL
 {
@@ -74,7 +74,7 @@ namespace UserManagement.BL
             var users = repository.GetUsers();
             var userInDatabase = users.FirstOrDefault(u => u.UserName == user.Name);
 
-            if (userInDatabase != null)
+            if (userInDatabase != null && user.Password != null)
             {
                 var passwordHash = GetPasswordHash(user.Password, userInDatabase.Salt);
 

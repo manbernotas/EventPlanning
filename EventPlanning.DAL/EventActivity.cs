@@ -7,7 +7,12 @@ namespace EventPlanning.DAL
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [ForeignKey("Event")]
         public int EventId { get; set; }
+        public Event Event { get; set; }
+
+        [ForeignKey("Activity")]
         public int ActivityId { get; set; }
+        public Activity Activity { get; set; }
     }
 }

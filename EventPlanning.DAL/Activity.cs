@@ -1,14 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventPlanning.DAL
 {
     public class Activity
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public int MinParticipants { get; set; }
         public int MaxParticipants { get; set; }
+
+        [ForeignKey("ActivityType")]
         public int? ActivityTypeId { get; set; }
+        public ActivityType ActivityType { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace UserManagement.Model
 {
     public class UserData
     {

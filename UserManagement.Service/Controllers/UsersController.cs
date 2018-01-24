@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Model;
+using UserManagement.Model;
 using UserManagement.BL;
 
 namespace UserManagement.Service.Controllers
