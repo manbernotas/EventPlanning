@@ -94,7 +94,8 @@ namespace EventPlanning.BL
         {
             return repository.GetEvents().FirstOrDefault(e => e.Name == name)?.Id;
         }
-
+        // uhjhkjkji
+        // aaa
         /// <summary>
         /// Returns copy of EventData type as Event type
         /// </summary>
