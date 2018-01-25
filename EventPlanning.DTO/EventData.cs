@@ -2,12 +2,12 @@
 {
     public class EventData
     {
-        public string Name { get; set; }
-        public string Date { get; set; }
-        public string Duration { get; set; }
+        public string Title { get; set; }
+        public int UserId { get; set; }
+        public string Description { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
         public string Address { get; set; }
-        public int MinParticipants { get; set; }
-        public int MaxParticipants { get; set; }
         public string[] Activities { get; set; }
     }
 }

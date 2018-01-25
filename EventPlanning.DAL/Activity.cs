@@ -8,13 +8,12 @@ namespace EventPlanning.DAL
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public int MinParticipants { get; set; }
         public int MaxParticipants { get; set; }
 
         [ForeignKey("ActivityType")]
         public int? ActivityTypeId { get; set; }
-        public ActivityType ActivityType { get; set; }
     }
 }

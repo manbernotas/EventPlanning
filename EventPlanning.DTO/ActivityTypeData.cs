@@ -6,6 +6,6 @@ namespace EventPlanning.Model
 {
     public class ActivityTypeData
     {
-        public string Name { get; set; }
+        public string Title { get; set; }
     }
 }

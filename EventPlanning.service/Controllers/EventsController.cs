@@ -47,13 +47,13 @@ namespace EventPlanning.service.Controllers
         /// <remarks>
         /*
         {
-            "name": "BG",
-            "date":"2018-01-23",
-            "duration":6,
-            "address":"Baltupio 9",
-            "minparticipants":2,
-            "maxparticipants":10,
-            "activities":["Battle city", "Monopoly"]
+	        "title":"Pandemic challenge",
+	        "description":"Save the world together",
+	        "userid":1,
+	        "datefrom":"2017-01-02",
+	        "dateto":"2017-01-02",
+	        "address":"baltupio 1",
+	        "activities":["Pandemic"]
         }
         */
         ///</remarks>
@@ -72,11 +72,11 @@ namespace EventPlanning.service.Controllers
         /// <remarks>
         /*
         {
-	        "name":"Battle city",
-	        "description":"Tanks",
-	        "minparticipants":1,
-	        "maxparticipants":2,
-	        "activitytype":"Video game"
+	        "title":"Pandemic",
+	        "description":"Save the world",
+	        "minparticipants":2,
+	        "maxparticipants":4,
+	        "activitytype":"Board game"
         }
         */
         ///</remarks>
@@ -95,7 +95,7 @@ namespace EventPlanning.service.Controllers
         /// <remarks>
         /*
         {
-           "name":"Video game"
+           "title":"Video game"
         }
         */
         ///</remarks>

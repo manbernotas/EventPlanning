@@ -9,12 +9,12 @@ namespace EventPlanning.DAL
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string Name { get; set; }
-        public DateTime Date { get; set; }
-        public string Duration { get; set; }
+        public int UserId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
         public string Address { get; set; }
-        public int MinParticipants { get; set; }
-        public int MaxParticipants { get; set; }
         public List<EventActivity> Activities { get; set; }
         public List<Participant> Participants { get; set; }
     }

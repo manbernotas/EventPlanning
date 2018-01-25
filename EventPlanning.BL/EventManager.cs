@@ -45,7 +45,7 @@ namespace EventPlanning.BL
         {
             var events = GetEvents();
 
-            if (eventData != null && events.FirstOrDefault(e => e.Name == eventData.Name) == null)
+            if (eventData != null && events.FirstOrDefault(e => e.Title == eventData.Title) == null)
             {
                 var newEvent = CopyEventDataToEvent(eventData);
                 
@@ -59,7 +59,7 @@ namespace EventPlanning.BL
                         eventActivities.Add(new EventActivity()
                         {
                             ActivityId = GetActivityId(activity) ?? 0,
-                            EventId = GetEventId(newEvent.Name) ?? 0,
+                            EventId = GetEventId(newEvent.Title) ?? 0,
                         });
                     }
                     repository.SaveEventActivities(eventActivities);
@@ -82,7 +82,7 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public int? GetActivityId(string activity)
         {
-            return repository.GetActivities().FirstOrDefault(a => a.Name == activity)?.Id;
+            return repository.GetActivities().FirstOrDefault(a => a.Title == activity)?.Id;
         }
 
         /// <summary>
@@ -90,12 +90,11 @@ namespace EventPlanning.BL
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public int? GetEventId(string name)
+        public int? GetEventId(string title)
         {
-            return repository.GetEvents().FirstOrDefault(e => e.Name == name)?.Id;
+            return repository.GetEvents().FirstOrDefault(e => e.Title == title)?.Id;
         }
-        // uhjhkjkji
-        // aaa
+        
         /// <summary>
         /// Returns copy of EventData type as Event type
         /// </summary>
@@ -105,12 +104,12 @@ namespace EventPlanning.BL
         {
             var newEvent = new Event()
             {
-                Name = eventData.Name,
-                Date = Convert.ToDateTime(eventData.Date),
+                Title = eventData.Title,
+                DateFrom = Convert.ToDateTime(eventData.DateFrom),
+                DateTo = Convert.ToDateTime(eventData.DateTo),
                 Address = eventData.Address,
-                Duration = eventData.Duration,
-                MaxParticipants = eventData.MaxParticipants,
-                MinParticipants = eventData.MinParticipants,
+                Description = eventData.Description,
+                UserId = eventData.UserId,
             };
 
             return newEvent;
@@ -148,11 +147,11 @@ namespace EventPlanning.BL
         {
             var activities = GetActivities();
 
-            if (activityData != null && activities.FirstOrDefault(a => a.Name == activityData.Name) == null)
+            if (activityData != null && activities.FirstOrDefault(a => a.Title == activityData.Title) == null)
             {
                 var newActivity = new Activity()
                 {
-                    Name = activityData.Name,
+                    Title = activityData.Title,
                     Description = activityData.Description,
                     MaxParticipants = activityData.MaxParticipants,
                     MinParticipants = activityData.MinParticipants,
@@ -179,11 +178,11 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public bool CreateActivityType(ActivityTypeData activityType)
         {
-            if (activityType != null && repository.GetActivityTypes().FirstOrDefault(a => a.Name == activityType.Name) == null)
+            if (activityType != null && repository.GetActivityTypes().FirstOrDefault(a => a.Title == activityType.Title) == null)
             {
                 var newActivityType = new ActivityType()
                 {
-                    Name = activityType.Name
+                    Title = activityType.Title
                 };
 
                 try
@@ -206,7 +205,7 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public int? GetActivityTypeId(string activityType)
         {
-            return repository.GetActivityTypes().FirstOrDefault(t => t.Name == activityType)?.Id;
+            return repository.GetActivityTypes().FirstOrDefault(t => t.Title == activityType)?.Id;
         }
 
         /// <summary>

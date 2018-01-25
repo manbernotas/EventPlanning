@@ -25,12 +25,12 @@ namespace EventPlanning.BL.Tests
             context.Event.Add(new Event()
             {
                 Id = 1,
-                Name = "BG and VG event",
-                Date = new DateTime(2018, 01, 23),
-                Duration = "6",
+                UserId = 1,
+                Description = "Board and video games",
+                Title = "BG and VG event",
+                DateFrom = new DateTime(2018, 01, 23),
+                DateTo = new DateTime(2018, 01, 23),
                 Address = "Test g. 93-3",
-                MinParticipants = 2,
-                MaxParticipants = 10,
                 Activities = new List<EventActivity>()
                 {
                     new EventActivity()
@@ -51,7 +51,7 @@ namespace EventPlanning.BL.Tests
             context.Activity.Add(new Activity()
             {
                 Id = 1,
-                Name = "Battle city",
+                Title = "Battle city",
                 Description = "Tanks",
                 MinParticipants = 1,
                 MaxParticipants = 2,
@@ -61,7 +61,7 @@ namespace EventPlanning.BL.Tests
             context.Activity.Add(new Activity()
             {
                 Id = 2,
-                Name = "Monopoly",
+                Title = "Monopoly",
                 Description = "Everybody knows it",
                 MinParticipants = 2,
                 MaxParticipants = 6,
@@ -71,13 +71,13 @@ namespace EventPlanning.BL.Tests
             context.ActivityType.Add(new ActivityType()
             {
                 Id = 1,
-                Name = "Video game",
+                Title = "Video game",
             });
 
             context.ActivityType.Add(new ActivityType()
             {
                 Id = 2,
-                Name = "Board game",
+                Title = "Board game",
             });
 
             context.SaveChanges();
