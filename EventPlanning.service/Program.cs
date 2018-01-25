@@ -18,7 +18,7 @@ namespace EventPlanning.service
                 try
                 {
                     var context = services.GetRequiredService<DAL.EventContext>();
-                    context.Database.EnsureDeleted();
+                    //context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
 
                     context.SaveChanges();

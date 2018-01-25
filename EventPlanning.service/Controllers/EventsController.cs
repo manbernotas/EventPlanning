@@ -21,7 +21,20 @@ namespace EventPlanning.service.Controllers
         [HttpGet]
         public List<DAL.Event> GetEvents()
         {
-            return eventManager.GetEventsWithActivities();
+            return eventManager.GetEvents();
+        }
+
+        // GET api/events/1
+        [HttpGet("{userId}")]
+        public List<DAL.Event> GetEvents(int userId)
+        {
+            return eventManager.GetUserEvents(userId);
+        }
+
+        [HttpGet("activities/{eventId}")]
+        public List<DAL.Activity> GetEventsActivities(int eventId)
+        {
+            return eventManager.GetEventActivities(eventId);
         }
 
         // GET api/events/activities

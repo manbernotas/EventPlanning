@@ -28,12 +28,42 @@ namespace EventPlanning.BL
         }
 
         /// <summary>
-        /// Returns all events with activities
+        /// Returns events created by user
         /// </summary>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public List<Event> GetEventsWithActivities()
+        public List<Event> GetUserEvents(int userId)
         {
-            return repository.GetEventsWithActivities().ToList();
+            try
+            {
+                return repository.GetEvents().Where(e => e.UserId == userId).ToList();
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+            
+        }
+
+        /// <summary>
+        /// Returns event activities
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public List<Activity> GetEventActivities(int eventId)
+        {
+            try
+            {
+                return repository.GetEventsActivities()
+                .Where(ea => ea.EventId == eventId)
+                .Select(ea => ea.Activity)
+                .ToList();
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+            
         }
 
         /// <summary>

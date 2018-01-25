@@ -12,6 +12,7 @@ namespace EventPlanning.DAL
         public string Description { get; set; }
         public int MinParticipants { get; set; }
         public int MaxParticipants { get; set; }
+        public virtual ICollection<EventActivity> EventActivities { get; set; }
 
         [ForeignKey("ActivityType")]
         public int? ActivityTypeId { get; set; }
