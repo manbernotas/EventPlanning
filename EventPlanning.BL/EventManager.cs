@@ -34,15 +34,7 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public List<Event> GetUserEvents(int userId)
         {
-            try
-            {
-                return repository.GetEvents()?.Where(e => e.UserId == userId).ToList();
-            }
-            catch (ArgumentNullException)
-            {
-                return null;
-            }
-            
+            return repository.GetUserEvents(userId)?.ToList();
         }
 
         /// <summary>
@@ -52,17 +44,7 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public List<Activity> GetEventActivities(int eventId)
         {
-            try
-            {
-                return repository.GetEventActivities(eventId)?
-                .Select(ea => ea.Activity)
-                .ToList();
-            }
-            catch (ArgumentNullException)
-            {
-                return null;
-            }
-            
+            return repository.GetEventActivities(eventId)?.ToList();
         }
 
         /// <summary>

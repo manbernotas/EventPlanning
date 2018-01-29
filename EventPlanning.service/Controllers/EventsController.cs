@@ -32,7 +32,7 @@ namespace EventPlanning.service.Controllers
         }
 
         [HttpGet("activities/{eventId}")]
-        public List<DAL.Activity> GetEventsActivities(int eventId)
+        public List<DAL.Activity> GetEventActivities(int eventId)
         {
             return eventManager.GetEventActivities(eventId);
         }
