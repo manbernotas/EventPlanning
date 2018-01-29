@@ -36,7 +36,7 @@ namespace EventPlanning.BL
         {
             try
             {
-                return repository.GetEvents().Where(e => e.UserId == userId).ToList();
+                return repository.GetEvents()?.Where(e => e.UserId == userId).ToList();
             }
             catch (ArgumentNullException)
             {
@@ -54,8 +54,7 @@ namespace EventPlanning.BL
         {
             try
             {
-                return repository.GetEventsActivities()
-                .Where(ea => ea.EventId == eventId)
+                return repository.GetEventActivities(eventId)?
                 .Select(ea => ea.Activity)
                 .ToList();
             }

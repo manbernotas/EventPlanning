@@ -9,11 +9,9 @@ namespace EventPlanning.DAL
 
         [ForeignKey("Event")]
         public int EventId { get; set; }
-
         [ForeignKey("Activity")]
         public int ActivityId { get; set; }
-
-        public virtual Event Event { get; set; }
-        public virtual Activity Activity { get; set; }
+        public Event Event { get; set; }
+        public Activity Activity { get; set; }
     }
 }

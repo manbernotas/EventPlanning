@@ -28,9 +28,9 @@ namespace EventPlanning.DAL
             return context.Event;
         }
 
-        public IQueryable<EventActivity> GetEventsActivities()
+        public IQueryable<EventActivity> GetEventActivities(int eventId)
         {
-            return context.EventActivity;
+            return context.EventActivity.Where(e => e.EventId == eventId);
         }
 
         public bool SaveActivityType(ActivityType activityType)
