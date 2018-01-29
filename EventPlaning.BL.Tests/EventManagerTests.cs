@@ -31,7 +31,7 @@ namespace EventPlanning.BL.Tests
                 DateFrom = new DateTime(2018, 01, 23),
                 DateTo = new DateTime(2018, 01, 23),
                 Address = "Test g. 93-3",
-                Activities = new List<EventActivity>()
+                EventActivities = new List<EventActivity>()
                 {
                     new EventActivity()
                     {
@@ -89,6 +89,30 @@ namespace EventPlanning.BL.Tests
             context.Database.EnsureDeleted();
             eventManager = null;
             context = null;
+        }
+
+        [TestMethod]
+        public void GetUserEventsOK()
+        {
+            Assert.AreEqual(1, eventManager.GetUserEvents(1).Count);
+        }
+
+        [TestMethod]
+        public void GetUserEventsFail()
+        {
+            Assert.AreEqual(0, eventManager.GetUserEvents(2).Count);
+        }
+
+        [TestMethod]
+        public void GetEventActivitiesOK()
+        {
+            Assert.AreEqual(2, eventManager.GetEventActivities(1).Count);
+        }
+
+        [TestMethod]
+        public void GetEventActivitiesFail()
+        {
+            Assert.AreEqual(0, eventManager.GetUserEvents(2).Count);
         }
 
         [TestMethod]
