@@ -92,6 +92,46 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void GetEventsOK()
+        {
+            Assert.AreEqual(1, eventManager.GetEvents("BG and VG").Count);
+        }
+
+        [TestMethod]
+        public void GetEventsFail()
+        {
+            Assert.AreEqual(0, eventManager.GetEvents("NotExistingString").Count);
+        }
+
+        [TestMethod]
+        public void GetEventsByDateOK()
+        {
+            Assert.AreEqual(1, eventManager.GetEvents(new DateTime(2018, 01, 23),
+                new DateTime(2018, 01, 24)).Count);
+        }
+
+        [TestMethod]
+        public void GetEventsByDateFail()
+        {
+            Assert.AreEqual(0, eventManager.GetEvents(new DateTime(2018, 01, 24),
+                 new DateTime(2018, 10, 07)).Count);
+        }
+
+        [TestMethod]
+        public void GetEventsByDateAndTimeOK()
+        {
+            Assert.AreEqual(1, eventManager.GetEvents(new DateTime(2018, 01, 23, 12, 15, 30),
+                new DateTime(2018, 01, 24, 1, 16, 30)).Count);
+        }
+
+        [TestMethod]
+        public void GetEventsByDateAndTimeFail()
+        {
+            Assert.AreEqual(0, eventManager.GetEvents(new DateTime(2018, 01, 24, 10, 5, 8),
+                 new DateTime(2018, 10, 07, 8, 9, 19)).Count);
+        }
+
+        [TestMethod]
         public void GetUserEventsOK()
         {
             Assert.AreEqual(1, eventManager.GetUserEvents(1).Count);
@@ -162,91 +202,5 @@ namespace EventPlanning.BL.Tests
         {
             Assert.IsNull(eventManager.GetEventId("Mono"));
         }
-
-        //[TestMethod]
-        //public void CreateActivityOK()
-        //{
-        //    var activity = new ActivityData()
-        //    {
-        //        Name = "Pandemic",
-        //        ActivityType = "Board game",
-        //        Description = "Save the world!",
-        //        MinParticipants = 1,
-        //        MaxParticipants = 4,
-        //    };
-
-        //    Assert.IsTrue(eventManager.CreateActivity(activity));
-        //}
-
-        //[TestMethod]
-        //public void CreateActivityFail()
-        //{
-        //    var activity = new ActivityData()
-        //    {
-        //        Name = "Battle city",
-        //        ActivityType = "Board game",
-        //        Description = "Save the world!",
-        //        MinParticipants = 1,
-        //        MaxParticipants = 4,
-        //    };
-
-        //    Assert.IsFalse(eventManager.CreateActivity(activity));
-        //}
-
-        //[TestMethod]
-        //public void CreateActivityTypeOK()
-        //{
-        //    var activityType = new ActivityTypeData()
-        //    {
-        //        Name = "Puzzle",
-        //    };
-
-        //    Assert.IsTrue(eventManager.CreateActivityType(activityType));
-        //}
-
-        //[TestMethod]
-        //public void CreateActivityTypeFail()
-        //{
-        //    var activityType = new ActivityTypeData()
-        //    {
-        //        Name = "Board game",
-        //    };
-
-        //    Assert.IsFalse(eventManager.CreateActivityType(activityType));
-        //}
-
-        //[TestMethod]
-        //public void CreateEventOK()
-        //{
-        //    var eventData = new EventData()
-        //    {
-        //        Name = "Board game challenge",
-        //        Date = "2018-02-08",
-        //        Address = "Ateities g. 4F, Vilnius",
-        //        Duration = "5",
-        //        MinParticipants = 4,
-        //        MaxParticipants = 12,
-        //        Activities = new string[1] { "Monopoly" },
-        //    };
-
-        //    Assert.IsTrue(eventManager.CreateEvent(eventData));
-        //}
-
-        //[TestMethod]
-        //public void CreateEventFailNameExists()
-        //{
-        //    var eventData = new EventData()
-        //    {
-        //        Name = "BG and VG event",
-        //        Date = "2018-02-08",
-        //        Address = "Ateities g. 4F, Vilnius",
-        //        Duration = "5",
-        //        MinParticipants = 4,
-        //        MaxParticipants = 12,
-        //        Activities = new string[1] { "Monopoly" },
-        //    };
-
-        //    Assert.IsFalse(eventManager.CreateEvent(eventData));
-        //}
     }
 }

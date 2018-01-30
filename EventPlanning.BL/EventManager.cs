@@ -38,6 +38,35 @@ namespace EventPlanning.BL
         }
 
         /// <summary>
+        /// Returns events where any event property contains pattern
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public List<Event> GetEvents(string pattern)
+        {
+            return repository.GetEvents()
+                .Where(e => e.Address != null && e.Address.Contains(pattern)
+                         || e.Title != null && e.Title.Contains(pattern)
+                         || e.Description != null && e.Description.Contains(pattern)
+                         || e.UserId.ToString().Contains(pattern)
+                         || e.Id.ToString().Contains(pattern))
+                .ToList();
+        }
+
+        /// <summary>
+        /// Returns events between date intervals
+        /// </summary>
+        /// <param name="dateFrom"></param>
+        /// <param name="dateTo"></param>
+        /// <returns></returns>
+        public List<Event> GetEvents(DateTime dateFrom, DateTime dateTo)
+        {
+            return repository.GetEvents()
+                .Where(e => e.DateFrom >= dateFrom.Date && e.DateTo <= dateTo.Date)
+                .ToList();
+        }
+
+        /// <summary>
         /// Returns event activities
         /// </summary>
         /// <param name="eventId"></param>

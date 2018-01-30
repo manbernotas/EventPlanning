@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EventPlanning.BL;
 using EventPlanning.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,20 @@ namespace EventPlanning.service.Controllers
         public List<DAL.Event> GetEvents(int userId)
         {
             return eventManager.GetUserEvents(userId);
+        }
+        
+        // GET api/events/search/Pan
+        [HttpGet("search/{pattern:minlength(3)}")]
+        public List<DAL.Event> GetEvents(string pattern)
+        {
+            return eventManager.GetEvents(pattern);
+        }
+
+        // GET api/events/search-by-date/2017-01-03/2017-05-08
+        [HttpGet("search-by-date/{dateFrom:datetime}/{dateTo:datetime?}")]
+        public List<DAL.Event> GetEvents(DateTime dateFrom, DateTime? dateTo = null)
+        {
+            return eventManager.GetEvents(dateFrom, dateTo ?? dateFrom);
         }
 
         [HttpGet("activities/{eventId}")]
