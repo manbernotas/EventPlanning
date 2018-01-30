@@ -62,7 +62,7 @@ namespace EventPlanning.BL
         public List<Event> GetEvents(DateTime dateFrom, DateTime dateTo)
         {
             return repository.GetEvents()
-                .Where(e => e.DateFrom.Date >= dateFrom && e.DateTo <= dateTo.Date)
+                .Where(e => e.DateFrom >= dateFrom.Date && e.DateTo <= dateTo.Date)
                 .ToList();
         }
 

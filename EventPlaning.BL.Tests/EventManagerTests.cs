@@ -118,6 +118,20 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void GetEventsByDateAndTimeOK()
+        {
+            Assert.AreEqual(1, eventManager.GetEvents(new DateTime(2018, 01, 23, 12, 15, 30),
+                new DateTime(2018, 01, 24, 1, 16, 30)).Count);
+        }
+
+        [TestMethod]
+        public void GetEventsByDateAndTimeFail()
+        {
+            Assert.AreEqual(0, eventManager.GetEvents(new DateTime(2018, 01, 24, 10, 5, 8),
+                 new DateTime(2018, 10, 07, 8, 9, 19)).Count);
+        }
+
+        [TestMethod]
         public void GetUserEventsOK()
         {
             Assert.AreEqual(1, eventManager.GetUserEvents(1).Count);
