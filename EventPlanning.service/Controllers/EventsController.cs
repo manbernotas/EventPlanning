@@ -31,9 +31,9 @@ namespace EventPlanning.service.Controllers
         {
             return eventManager.GetUserEvents(userId);
         }
-
-        // GET api/events/search
-        [HttpGet("search/{pattern}")]
+        
+        // GET api/events/search/Pan
+        [HttpGet("search/{pattern:minlength(3)}")]
         public List<DAL.Event> GetEvents(string pattern)
         {
             return eventManager.GetEvents(pattern);
@@ -43,7 +43,7 @@ namespace EventPlanning.service.Controllers
         [HttpGet("search-by-date/{dateFrom:datetime}/{dateTo:datetime?}")]
         public List<DAL.Event> GetEvents(DateTime dateFrom, DateTime? dateTo = null)
         {
-            return eventManager.GetEvents(dateFrom, dateTo);
+            return eventManager.GetEvents(dateFrom, dateTo ?? dateFrom);
         }
 
         [HttpGet("activities/{eventId}")]

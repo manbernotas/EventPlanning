@@ -54,21 +54,6 @@ namespace EventPlanning.DAL
             return true;
         }
 
-        public IQueryable<Event> GetEvents(string pattern)
-        {
-            return context.Event
-                .Where(e => e.Address.Contains(pattern)
-                         || e.Title.Contains(pattern)
-                         || e.Description.Contains(pattern)
-                         || e.UserId.ToString().Contains(pattern)
-                         || e.Id.ToString().Contains(pattern));
-        }
-
-        public IQueryable<Event> GetEvents(DateTime dateFrom, DateTime dateTo)
-        {
-            return context.Event.Where(e => e.DateFrom >= dateFrom && e.DateTo <= dateTo);
-        }
-
         public bool SaveActivity(Activity activity)
         {
             try

@@ -44,7 +44,13 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public List<Event> GetEvents(string pattern)
         {
-            return repository.GetEvents(pattern)?.ToList();
+            return repository.GetEvents()
+                .Where(e => e.Address != null && e.Address.Contains(pattern)
+                         || e.Title != null && e.Title.Contains(pattern)
+                         || e.Description != null && e.Description.Contains(pattern)
+                         || e.UserId.ToString().Contains(pattern)
+                         || e.Id.ToString().Contains(pattern))
+                .ToList();
         }
 
         /// <summary>
@@ -53,9 +59,11 @@ namespace EventPlanning.BL
         /// <param name="dateFrom"></param>
         /// <param name="dateTo"></param>
         /// <returns></returns>
-        public List<Event> GetEvents(DateTime dateFrom, DateTime? dateTo)
+        public List<Event> GetEvents(DateTime dateFrom, DateTime dateTo)
         {
-            return repository.GetEvents(dateFrom, dateTo ?? dateFrom).ToList();
+            return repository.GetEvents()
+                .Where(e => e.DateFrom.Date >= dateFrom && e.DateTo <= dateTo.Date)
+                .ToList();
         }
 
         /// <summary>
