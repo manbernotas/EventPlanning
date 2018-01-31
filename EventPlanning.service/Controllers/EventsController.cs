@@ -151,5 +151,30 @@ namespace EventPlanning.service.Controllers
         {
             return eventManager.ParticipateInEvent(participant) ? StatusCode(200) : StatusCode(400);
         }
+
+        /// <summary>
+        /// Updates an existing event
+        /// </summary>
+        /// <param name="eventData"></param>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /*
+        {
+            "title":"Pande",
+            "description":"Save the world together",
+            "userid":1,
+            "datefrom":"2017-01-02",
+            "dateto":"2017-01-02",
+            "address":"baltupio 1",
+            "activities":["Pandemic"]
+        }
+        */
+        /// </remarks>
+        [HttpPatch("{eventId}")]
+        public IActionResult PatchEvent([FromBody]EventData eventData, [FromRoute]int eventId)
+        {
+            return eventManager.PatchEvent(eventData, eventId) ? StatusCode(200) : StatusCode(400);
+        }
     }
 }

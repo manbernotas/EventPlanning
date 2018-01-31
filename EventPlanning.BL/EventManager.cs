@@ -45,11 +45,11 @@ namespace EventPlanning.BL
         public List<Event> GetEvents(string pattern)
         {
             return repository.GetEvents()
-                .Where(e => e.Address != null && e.Address.Contains(pattern)
-                         || e.Title != null && e.Title.Contains(pattern)
-                         || e.Description != null && e.Description.Contains(pattern)
-                         || e.UserId.ToString().Contains(pattern)
-                         || e.Id.ToString().Contains(pattern))
+                .Where(e => (e.Address != null && e.Address.Contains(pattern))
+                         || (e.Title != null && e.Title.Contains(pattern))
+                         || (e.Description != null && e.Description.Contains(pattern))
+                         || (e.UserId.ToString().Contains(pattern))
+                         || (e.Id.ToString().Contains(pattern)))
                 .ToList();
         }
 
@@ -153,6 +153,29 @@ namespace EventPlanning.BL
             };
 
             return newEvent;
+        }
+
+        public bool PatchEvent(EventData eventData, int eventId)
+        {
+            var ev = repository.GetEvent(eventId);
+
+            if (ev == null)
+            {
+                return false;
+            }
+
+            ev.Address = eventData.Address != ev.Address ? eventData.Address : ev.Address;
+            ev.DateFrom = Convert.ToDateTime(eventData.DateFrom) != (ev.DateFrom) ? Convert.ToDateTime(eventData.DateFrom) : ev.DateFrom;
+            ev.DateFrom = Convert.ToDateTime(eventData.DateTo) != (ev.DateTo) ? Convert.ToDateTime(eventData.DateTo) : ev.DateTo;
+            ev.Description = eventData.Description != ev.Description ? eventData.Description : ev.Description;
+            ev.Title = eventData.Title != ev.Title ? eventData.Title : ev.Title;
+
+            return repository.Update(ev);
+        }
+
+        public Event GetEvent(int eventId)
+        {
+            return repository.GetEvent(eventId);
         }
 
         /// <summary>

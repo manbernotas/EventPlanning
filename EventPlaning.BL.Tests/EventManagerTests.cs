@@ -92,9 +92,73 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void PatchEventOK()
+        {
+            var newEventData = new EventData()
+            {
+                UserId = 1,
+                Description = "Board and video games",
+                Title = "BG and VG event",
+                DateFrom = "2018-01-23",
+                DateTo = "2018-01-23",
+                Address = "new g.1",
+            };
+
+            eventManager.PatchEvent(newEventData, 1);
+
+            Assert.AreEqual("new g.1", eventManager.GetEvent(1).Address);
+        }
+
+        [TestMethod]
+        public void PatchEventFail()
+        {
+            var newEventData = new EventData()
+            {
+                UserId = 1,
+                Description = "Board and video games",
+                Title = "BG and VG event",
+                DateFrom = "2018-01-23",
+                DateTo = "2018-01-23",
+                Address = "new g.1",
+            };
+
+            Assert.IsFalse(eventManager.PatchEvent(newEventData, 2));
+        }
+
+        [TestMethod]
         public void GetEventsOK()
         {
             Assert.AreEqual(1, eventManager.GetEvents("BG and VG").Count);
+        }
+
+        [TestMethod]
+        public void GetEventsOKWithNullTitle()
+        {
+            context.Event.Add(new Event()
+            {
+                Id = 2,
+                UserId = 1,
+                Description = "Board games",
+                DateFrom = new DateTime(2018, 01, 23),
+                DateTo = new DateTime(2018, 01, 23),
+                Address = "Test g. 93-3",
+            });
+
+            context.SaveChanges();
+
+            Assert.IsNotNull(eventManager.GetEvents("2"));
+        }
+
+        [TestMethod]
+        public void GetEventOK()
+        {
+            Assert.IsNotNull(eventManager.GetEvent(1));
+        }
+
+        [TestMethod]
+        public void GetEventFail()
+        {
+            Assert.IsNull(eventManager.GetEvent(2));
         }
 
         [TestMethod]
