@@ -164,11 +164,10 @@ namespace EventPlanning.BL
                 return false;
             }
 
-            var dateFrom = Convert.ToDateTime(eventData.DateFrom);
-            var dateTo = Convert.ToDateTime(eventData.DateTo);
-
             ev.Address = eventData.Address != ev.Address ? eventData.Address : ev.Address;
+            var dateFrom = Convert.ToDateTime(eventData.DateFrom);
             ev.DateFrom = dateFrom != ev.DateFrom ? dateFrom : ev.DateFrom;
+            var dateTo = Convert.ToDateTime(eventData.DateTo);
             ev.DateFrom = dateTo != ev.DateTo ? dateTo : ev.DateTo;
             ev.Description = eventData.Description != ev.Description ? eventData.Description : ev.Description;
             ev.Title = eventData.Title != ev.Title ? eventData.Title : ev.Title;
