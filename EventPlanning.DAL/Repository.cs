@@ -113,5 +113,25 @@ namespace EventPlanning.DAL
 
             return true;
         }
+
+        public Event GetEvent(int eventId)
+        {
+            return context.Event.FirstOrDefault(e => e.Id == eventId);
+        }
+
+        public bool Update(Event eventData)
+        {
+            try
+            {
+                context.Event.Update(eventData);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+            
+            return true;
+        }
     }
 }
