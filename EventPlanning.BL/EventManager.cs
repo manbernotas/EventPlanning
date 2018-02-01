@@ -176,6 +176,27 @@ namespace EventPlanning.BL
         }
 
         /// <summary>
+        /// Removes activity from event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="activityData"></param>
+        /// <returns></returns>
+        public bool RemoveActivityFromEvent(int eventId, ActivityData activityData)
+        {
+            var ev = repository.GetEvent(eventId);
+
+            if (ev == null)
+            {
+                return false;
+            }
+
+            var activityId = GetActivityId(activityData.Title);
+            var ea = repository.GetEventActivity(eventId, (int)activityId);
+
+            return repository.Delete(ea);
+        }
+
+        /// <summary>
         /// Adds activities to event
         /// </summary>
         /// <param name="activityData"></param>

@@ -181,5 +181,11 @@ namespace EventPlanning.service.Controllers
         {
             return eventManager.AddActivityToEvent(eventId, activityData) ? StatusCode(200) : StatusCode(400);
         }
+
+        [HttpDelete("{eventId}")]
+        public IActionResult RemoveActivityFromEvent([FromRoute]int eventId, [FromBody]ActivityData activityData)
+        {
+            return eventManager.RemoveActivityFromEvent(eventId, activityData) ? StatusCode(200) : StatusCode(400);
+        }
     }
 }

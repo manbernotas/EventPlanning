@@ -90,6 +90,30 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void RemoveActivityOK()
+        {
+            var activity = new ActivityData()
+            {
+                Title = "Monopoly",
+            };
+
+            eventManager.RemoveActivityFromEvent(1, activity);
+
+            Assert.AreEqual(1, eventManager.GetEventActivities(1).Count);
+        }
+
+        [TestMethod]
+        public void RemoveActivityFail()
+        {
+            var activity = new ActivityData()
+            {
+                Title = "Monopoly",
+            };
+
+            Assert.IsFalse(eventManager.RemoveActivityFromEvent(2, activity));
+        }
+
+        [TestMethod]
         public void AddActivitesToEventOK()
         {
             context.Activity.Add(new Activity()

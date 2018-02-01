@@ -24,6 +24,11 @@ namespace EventPlanning.DAL
             return context.ActivityType;
         }
 
+        public EventActivity GetEventActivity(int EventId, int activityId)
+        {
+            return context.EventActivity.Single(ea => ea.EventId == EventId && ea.ActivityId == activityId);
+        }
+
         public IQueryable<Event> GetEvents()
         {
             return context.Event;
@@ -139,6 +144,21 @@ namespace EventPlanning.DAL
             try
             {
                 context.EventActivity.Add(eventActivity);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Delete(EventActivity eventActivity)
+        {
+            try
+            {
+                context.EventActivity.Remove(eventActivity);
                 context.SaveChanges();
             }
             catch (DbUpdateException)
