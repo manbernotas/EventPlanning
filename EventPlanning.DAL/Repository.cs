@@ -133,5 +133,20 @@ namespace EventPlanning.DAL
             
             return true;
         }
+
+        public bool UpdateEventActivities(List<EventActivity> eventActivities)
+        {
+            try
+            {
+                context.EventActivity.UpdateRange(eventActivities);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

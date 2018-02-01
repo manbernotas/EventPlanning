@@ -176,5 +176,11 @@ namespace EventPlanning.service.Controllers
         {
             return eventManager.PatchEvent(eventData, eventId) ? StatusCode(200) : StatusCode(400);
         }
+
+        [HttpPut("{eventId}")]
+        public IActionResult AddActivitiesToEvent([FromBody]List<ActivityData> activityData, [FromRoute]int eventId)
+        {
+            return eventManager.AddActivitiesToEvent(activityData, eventId) ? StatusCode(200) : StatusCode(400);
+        }
     }
 }

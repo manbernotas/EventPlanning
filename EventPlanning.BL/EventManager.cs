@@ -175,6 +175,47 @@ namespace EventPlanning.BL
             return repository.Update(ev);
         }
 
+        /// <summary>
+        /// Adds activities to event
+        /// </summary>
+        /// <param name="activityData"></param>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public bool AddActivitiesToEvent(List<ActivityData> activityData, int eventId)
+        {
+            var ev = GetEvent(eventId);
+
+            if (ev == null)
+            {
+                return false;
+            }
+
+            var ea = GetEventActivities(eventId);
+            var newEventActivities = new List<EventActivity>();
+
+            foreach (var activity in activityData)
+            {
+                if (!ea.Exists(x => x.Title == activity.Title))
+                {
+                    var activityId = GetActivityId(activity.Title) ?? 0;
+
+                    if (activityId == 0)
+                    {
+                        continue;
+                    }
+
+                    newEventActivities.Add(new EventActivity()
+                    {
+                        EventId = ev.Id,
+                        ActivityId = activityId,
+                    });
+                }
+            }
+            
+            return newEventActivities == null ? 
+                false : repository.UpdateEventActivities(newEventActivities);
+        }
+
         public Event GetEvent(int eventId)
         {
             return repository.GetEvent(eventId);
