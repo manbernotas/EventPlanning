@@ -161,20 +161,25 @@ namespace EventPlanning.service.Controllers
         /// <remarks>
         /*
         {
-            "title":"Pande",
+            "title":"Pandemic",
             "description":"Save the world together",
             "userid":1,
             "datefrom":"2017-01-02",
             "dateto":"2017-01-02",
-            "address":"baltupio 1",
-            "activities":["Pandemic"]
+            "address":"baltupio 1"
         }
         */
         /// </remarks>
         [HttpPatch("{eventId}")]
-        public IActionResult PatchEvent([FromBody]EventData eventData, [FromRoute]int eventId)
+        public IActionResult PatchEvent([FromRoute]int eventId, [FromBody]EventData eventData)
         {
-            return eventManager.PatchEvent(eventData, eventId) ? StatusCode(200) : StatusCode(400);
+            return eventManager.PatchEvent(eventId, eventData) ? StatusCode(200) : StatusCode(400);
+        }
+
+        [HttpPut("{eventId}")]
+        public IActionResult AddActivityToEvent([FromRoute]int eventId, [FromBody]ActivityData activityData)
+        {
+            return eventManager.AddActivityToEvent(eventId, activityData) ? StatusCode(200) : StatusCode(400);
         }
     }
 }

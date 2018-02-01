@@ -155,7 +155,7 @@ namespace EventPlanning.BL
             return newEvent;
         }
 
-        public bool PatchEvent(EventData eventData, int eventId)
+        public bool PatchEvent(int eventId, EventData eventData)
         {
             var ev = repository.GetEvent(eventId);
 
@@ -173,6 +173,49 @@ namespace EventPlanning.BL
             ev.Title = eventData.Title != ev.Title ? eventData.Title : ev.Title;
 
             return repository.Update(ev);
+        }
+
+        /// <summary>
+        /// Adds activities to event
+        /// </summary>
+        /// <param name="activityData"></param>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public bool AddActivityToEvent(int eventId, ActivityData activityData)
+        {
+            var ev = GetEvent(eventId);
+
+            if (ev == null)
+            {
+                return false;
+            }
+
+            var ea = GetEventActivities(eventId);
+
+            if (!ea.Exists(x => x.Title == activityData.Title))
+            {
+                var activityId = GetActivityId(activityData.Title);
+                    
+                if (activityId == null)
+                {
+                    if (!CreateActivity(activityData))
+                    {
+                        return false;
+                    }
+
+                    activityId = GetActivityId(activityData.Title);
+                }
+
+                var newEventActivity = new EventActivity()
+                {
+                    EventId = ev.Id,
+                    ActivityId = (int)activityId,
+                };
+                
+                return repository.AddEventActivity(newEventActivity);
+            }
+
+            return false;
         }
 
         public Event GetEvent(int eventId)

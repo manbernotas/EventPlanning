@@ -123,7 +123,7 @@ namespace EventPlanning.DAL
         {
             try
             {
-                context.Event.Update(eventData);
+                context.Event.Attach(eventData);
                 context.SaveChanges();
             }
             catch (DbUpdateException)
@@ -131,6 +131,21 @@ namespace EventPlanning.DAL
                 return false;
             }
             
+            return true;
+        }
+
+        public bool AddEventActivity(EventActivity eventActivity)
+        {
+            try
+            {
+                context.EventActivity.Add(eventActivity);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
             return true;
         }
     }
