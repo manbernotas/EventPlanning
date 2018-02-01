@@ -123,7 +123,7 @@ namespace EventPlanning.DAL
         {
             try
             {
-                context.Event.Update(eventData);
+                context.Event.Attach(eventData);
                 context.SaveChanges();
             }
             catch (DbUpdateException)
@@ -134,11 +134,11 @@ namespace EventPlanning.DAL
             return true;
         }
 
-        public bool UpdateEventActivities(List<EventActivity> eventActivities)
+        public bool AddEventActivity(EventActivity eventActivity)
         {
             try
             {
-                context.EventActivity.UpdateRange(eventActivities);
+                context.EventActivity.Add(eventActivity);
                 context.SaveChanges();
             }
             catch (DbUpdateException)

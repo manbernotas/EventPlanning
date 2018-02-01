@@ -35,13 +35,13 @@ namespace EventPlanning.BL.Tests
                 {
                     new EventActivity()
                     {
-                        Id = 1,
+                        //Id = 1,
                         ActivityId = 1,
                         EventId = 1,
                     },
                     new EventActivity()
                     {
-                        Id = 2,
+                        //Id = 2,
                         ActivityId = 2,
                         EventId = 1,
                     }
@@ -92,6 +92,62 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void AddActivitesToEventOK()
+        {
+            context.Activity.Add(new Activity()
+            {
+                Id = 3,
+                Title = "Ghost stories",
+                Description = "Boo",
+                MinParticipants = 2,
+                MaxParticipants = 6,
+                ActivityTypeId = 2,
+            });
+
+            context.SaveChanges();
+
+            var activity = new ActivityData()
+            {
+                Title = "Ghost stories",
+                Description = "Boo",
+                MinParticipants = 2,
+                MaxParticipants = 6,
+                ActivityType = "Board game",
+            };
+
+            eventManager.AddActivityToEvent(1, activity);
+
+            Assert.AreEqual(3, eventManager.GetEventActivities(1).Count);
+        }
+
+        [TestMethod]
+        public void AddActivitesToEventFail()
+        {
+            context.Activity.Add(new Activity()
+            {
+                Id = 3,
+                Title = "Ghost stories",
+                Description = "Boo",
+                MinParticipants = 2,
+                MaxParticipants = 6,
+                ActivityTypeId = 2,
+            });
+
+            context.SaveChanges();
+
+            var activity = new ActivityData()
+            {
+                Title = "Ghost stories",
+                Description = "Boo",
+                MinParticipants = 2,
+                MaxParticipants = 6,
+                ActivityType = "Board game",
+            };
+
+            Assert.IsFalse(eventManager.AddActivityToEvent(2, activity));
+        }
+
+        [TestMethod]
         public void PatchEventOK()
         {
             var newEventData = new EventData()
@@ -104,7 +160,7 @@ namespace EventPlanning.BL.Tests
                 Address = "new g.1",
             };
 
-            eventManager.PatchEvent(newEventData, 1);
+            eventManager.PatchEvent(1, newEventData);
 
             Assert.AreEqual("new g.1", eventManager.GetEvent(1).Address);
         }
@@ -122,7 +178,7 @@ namespace EventPlanning.BL.Tests
                 Address = "new g.1",
             };
 
-            Assert.IsFalse(eventManager.PatchEvent(newEventData, 2));
+            Assert.IsFalse(eventManager.PatchEvent(2, newEventData));
         }
 
         [TestMethod]

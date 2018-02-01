@@ -155,7 +155,7 @@ namespace EventPlanning.BL
             return newEvent;
         }
 
-        public bool PatchEvent(EventData eventData, int eventId)
+        public bool PatchEvent(int eventId, EventData eventData)
         {
             var ev = repository.GetEvent(eventId);
 
@@ -181,7 +181,7 @@ namespace EventPlanning.BL
         /// <param name="activityData"></param>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        public bool AddActivitiesToEvent(List<ActivityData> activityData, int eventId)
+        public bool AddActivityToEvent(int eventId, ActivityData activityData)
         {
             var ev = GetEvent(eventId);
 
@@ -191,29 +191,27 @@ namespace EventPlanning.BL
             }
 
             var ea = GetEventActivities(eventId);
-            var newEventActivities = new List<EventActivity>();
 
-            foreach (var activity in activityData)
+            if (!ea.Exists(x => x.Title == activityData.Title))
             {
-                if (!ea.Exists(x => x.Title == activity.Title))
+                var activityId = GetActivityId(activityData.Title) ??
+                    (CreateActivity(activityData) ? GetActivityId(activityData.Title) : null);
+
+                if (activityId == null)
                 {
-                    var activityId = GetActivityId(activity.Title) ?? 0;
-
-                    if (activityId == 0)
-                    {
-                        continue;
-                    }
-
-                    newEventActivities.Add(new EventActivity()
-                    {
-                        EventId = ev.Id,
-                        ActivityId = activityId,
-                    });
+                    return false;
                 }
+
+                var newEventActivity = new EventActivity()
+                {
+                    EventId = ev.Id,
+                    ActivityId = (int)activityId,
+                };
+                
+                return repository.AddEventActivity(newEventActivity);
             }
-            
-            return newEventActivities == null ? 
-                false : repository.UpdateEventActivities(newEventActivities);
+
+            return false;
         }
 
         public Event GetEvent(int eventId)

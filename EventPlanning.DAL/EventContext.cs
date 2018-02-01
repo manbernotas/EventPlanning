@@ -18,7 +18,7 @@ namespace EventPlanning.DAL
         {
             modelBuilder.Entity<ActivityType>();
             modelBuilder.Entity<Activity>();
-            modelBuilder.Entity<EventActivity>();
+            modelBuilder.Entity<EventActivity>().HasKey(ea => new { ea.ActivityId, ea.EventId });
             modelBuilder.Entity<Participant>();
             modelBuilder.Entity<Event>();
         }
