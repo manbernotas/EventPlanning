@@ -194,12 +194,16 @@ namespace EventPlanning.BL
 
             if (!ea.Exists(x => x.Title == activityData.Title))
             {
-                var activityId = GetActivityId(activityData.Title) ??
-                    (CreateActivity(activityData) ? GetActivityId(activityData.Title) : null);
-
+                var activityId = GetActivityId(activityData.Title);
+                    
                 if (activityId == null)
                 {
-                    return false;
+                    if (!CreateActivity(activityData))
+                    {
+                        return false;
+                    }
+
+                    activityId = GetActivityId(activityData.Title);
                 }
 
                 var newEventActivity = new EventActivity()

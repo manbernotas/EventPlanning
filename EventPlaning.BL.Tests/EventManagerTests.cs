@@ -35,13 +35,11 @@ namespace EventPlanning.BL.Tests
                 {
                     new EventActivity()
                     {
-                        //Id = 1,
                         ActivityId = 1,
                         EventId = 1,
                     },
                     new EventActivity()
                     {
-                        //Id = 2,
                         ActivityId = 2,
                         EventId = 1,
                     }
