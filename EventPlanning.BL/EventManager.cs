@@ -176,6 +176,32 @@ namespace EventPlanning.BL
         }
 
         /// <summary>
+        /// Removes activity from event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="activityData"></param>
+        /// <returns></returns>
+        public bool RemoveActivityFromEvent(int eventId, ActivityData activityData)
+        {
+            var ev = repository.GetEvent(eventId);
+
+            if (ev == null)
+            {
+                return false;
+            }
+
+            var activityId = GetActivityId(activityData.Title);
+            var ea = repository.GetEventActivity(eventId, (int)activityId);
+
+            if (ea == null)
+            {
+                return false;
+            }
+
+            return repository.Delete(ea);
+        }
+
+        /// <summary>
         /// Adds activities to event
         /// </summary>
         /// <param name="activityData"></param>
@@ -218,9 +244,25 @@ namespace EventPlanning.BL
             return false;
         }
 
+        /// <summary>
+        /// Returns event by event Id
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         public Event GetEvent(int eventId)
         {
             return repository.GetEvent(eventId);
+        }
+
+        /// <summary>
+        /// Return event activity
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="activityId"></param>
+        /// <returns></returns>
+        public EventActivity GetEventActivity(int eventId, int activityId)
+        {
+            return repository.GetEventActivity(eventId, activityId);
         }
 
         /// <summary>

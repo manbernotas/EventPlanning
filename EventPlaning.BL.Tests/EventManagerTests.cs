@@ -90,6 +90,48 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void GetEventActivityOK()
+        {
+            Assert.AreEqual(1, eventManager.GetEventActivity(1, 1).ActivityId);
+        }
+
+        [TestMethod]
+        public void GetEventActivityFail()
+        {
+            Assert.IsNull(eventManager.GetEventActivity(2, 1));
+        }
+
+        [TestMethod]
+        public void RemoveActivityOK()
+        {
+            var activityData = new ActivityData()
+            {
+                Title = "Monopoly",
+            };
+
+            eventManager.RemoveActivityFromEvent(1, activityData);
+
+            Assert.AreEqual(1, eventManager.GetEventActivities(1).Count);
+
+            Assert.IsFalse(eventManager.GetEventActivities(1).Exists(x => x.Title == activityData.Title));
+        }
+
+        [TestMethod]
+        public void RemoveActivityFail()
+        {
+            var activityData = new ActivityData()
+            {
+                Title = "Monopoly",
+            };
+
+            eventManager.RemoveActivityFromEvent(2, activityData);
+
+            Assert.AreEqual(2, eventManager.GetEventActivities(1).Count);
+
+            Assert.IsTrue(eventManager.GetEventActivities(1).Exists(x => x.Title == activityData.Title));
+        }
+
+        [TestMethod]
         public void AddActivitesToEventOK()
         {
             context.Activity.Add(new Activity()
