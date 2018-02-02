@@ -26,7 +26,7 @@ namespace EventPlanning.DAL
 
         public EventActivity GetEventActivity(int EventId, int activityId)
         {
-            return context.EventActivity.Single(ea => ea.EventId == EventId && ea.ActivityId == activityId);
+            return context.EventActivity.SingleOrDefault(ea => ea.EventId == EventId && ea.ActivityId == activityId);
         }
 
         public IQueryable<Event> GetEvents()

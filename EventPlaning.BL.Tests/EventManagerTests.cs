@@ -90,6 +90,18 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void GetEventActivityOK()
+        {
+            Assert.AreEqual(1, eventManager.GetEventActivity(1, 1).ActivityId);
+        }
+
+        [TestMethod]
+        public void GetEventActivityFail()
+        {
+            Assert.IsNull(eventManager.GetEventActivity(2, 1));
+        }
+
+        [TestMethod]
         public void RemoveActivityOK()
         {
             var activity = new ActivityData()
@@ -99,7 +111,7 @@ namespace EventPlanning.BL.Tests
 
             eventManager.RemoveActivityFromEvent(1, activity);
 
-            Assert.AreEqual(1, eventManager.GetEventActivities(1).Count);
+            Assert.AreNotEqual("Monopoly", eventManager.GetEventActivities(1)[0].Title);
         }
 
         [TestMethod]
@@ -110,7 +122,9 @@ namespace EventPlanning.BL.Tests
                 Title = "Monopoly",
             };
 
-            Assert.IsFalse(eventManager.RemoveActivityFromEvent(2, activity));
+            eventManager.RemoveActivityFromEvent(2, activity);
+
+            Assert.AreEqual("Monopoly", eventManager.GetEventActivities(1)[1].Title);
         }
 
         [TestMethod]
