@@ -24,6 +24,12 @@ namespace UserManagement.Service.Controllers
             return userManager.GetUsers();
         }
 
+        [HttpGet("{user}")]
+        public int GetUserId(string user)
+        {
+            return userManager.GetUserId(user);
+        }
+
         // POST api/users/validate-user
         /// <summary>
         /// Validates if password is valid for user

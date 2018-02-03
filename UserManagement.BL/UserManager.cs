@@ -31,6 +31,16 @@ namespace UserManagement.BL
         }
 
         /// <summary>
+        /// Returns user Id by username or email
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public int GetUserId(string user)
+        {
+            return repository.GetUserId(user);
+        }
+
+        /// <summary>
         /// Generates random salt string for password Hashing
         /// </summary>
         /// <returns></returns>
@@ -102,6 +112,7 @@ namespace UserManagement.BL
                 {
                     UserName = user.Name,
                     Password = passwordHash,
+                    Email = user.Email,
                     Salt = salt,
                 };
 

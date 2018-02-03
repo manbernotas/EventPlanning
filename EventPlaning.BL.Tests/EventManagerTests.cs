@@ -188,6 +188,31 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void InviteToEventOK()
+        {
+            var user = new UserData()
+            {
+                Email = "eventinvitator@gmail.com",
+                Name = "Event",
+                Id = 2,
+            };
+
+            Assert.IsTrue(eventManager.InviteToEvent(1, user));
+        }
+
+        [TestMethod]
+        public void InviteToEventFail()
+        {
+            var user = new UserData()
+            {
+                Name = "Event",
+                Id = 2,
+            };
+
+            Assert.IsFalse(eventManager.InviteToEvent(1, user));
+        }
+
+        [TestMethod]
         public void PatchEventOK()
         {
             var newEventData = new EventData()

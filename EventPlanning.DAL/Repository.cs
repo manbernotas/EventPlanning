@@ -168,5 +168,20 @@ namespace EventPlanning.DAL
 
             return true;
         }
+
+        public bool AddInvitation(Invitation invitation)
+        {
+            try
+            {
+                context.Invitation.Add(invitation);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

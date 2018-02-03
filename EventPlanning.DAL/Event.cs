@@ -17,5 +17,6 @@ namespace EventPlanning.DAL
         public string Address { get; set; }
         public IEnumerable<EventActivity> EventActivities { get; set; }
         public IEnumerable<Participant> Participants { get; set; }
+        public IEnumerable<Invitation> Invitations { get; set; }
     }
 }

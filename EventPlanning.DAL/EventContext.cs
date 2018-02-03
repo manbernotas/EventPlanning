@@ -13,6 +13,7 @@ namespace EventPlanning.DAL
         public DbSet<Participant> Particiant { get; set; }
         public DbSet<Event> Event { get; set; }
         public DbSet<EventActivity> EventActivity { get; set; }
+        public DbSet<Invitation> Invitation { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,7 @@ namespace EventPlanning.DAL
             modelBuilder.Entity<EventActivity>().HasKey(ea => new { ea.ActivityId, ea.EventId });
             modelBuilder.Entity<Participant>();
             modelBuilder.Entity<Event>();
+            modelBuilder.Entity<Invitation>().HasKey(i => new { i.UserId, i.EventId });
         }
     }
 }

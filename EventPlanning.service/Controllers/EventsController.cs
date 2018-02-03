@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using EventPlanning.BL;
 using EventPlanning.Model;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EventPlanning.service.Controllers
 {
@@ -31,7 +35,7 @@ namespace EventPlanning.service.Controllers
         {
             return eventManager.GetUserEvents(userId);
         }
-        
+
         // GET api/events/search/Pan
         [HttpGet("search/{pattern:minlength(3)}")]
         public List<DAL.Event> GetEvents(string pattern)
@@ -64,6 +68,17 @@ namespace EventPlanning.service.Controllers
         public List<DAL.ActivityType> GetActivityTypes()
         {
             return eventManager.GetActivityTypes();
+        }
+
+        [HttpGet("user/{user}")]
+        public int GetUserId(string user)
+        {
+            var client = new HttpClient();
+            var response = client.GetAsync("http://localhost:5011/api/users/" + user).Result;
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<int>(responseContent);
+
+            return result;
         }
 
         // POST api/events/create-event
@@ -186,6 +201,12 @@ namespace EventPlanning.service.Controllers
         public IActionResult RemoveActivityFromEvent([FromRoute]int eventId, [FromBody]ActivityData activityData)
         {
             return eventManager.RemoveActivityFromEvent(eventId, activityData) ? StatusCode(200) : StatusCode(400);
+        }
+
+        [HttpPost("{eventId}/invite")]
+        public IActionResult InviteToEvent([FromRoute]int eventId, [FromBody]UserData user)
+        {
+            return eventManager.InviteToEvent(eventId, user) ? StatusCode(200) : StatusCode(400);
         }
     }
 }
