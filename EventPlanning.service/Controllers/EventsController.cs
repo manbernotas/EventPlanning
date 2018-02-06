@@ -15,11 +15,13 @@ namespace EventPlanning.service.Controllers
     {
         private readonly DAL.EventContext context;
         private EventManager eventManager;
+        private InvitationManager invitationManager;
 
-        public EventsController(DAL.EventContext context)
+        public EventsController(DAL.EventContext context, ISmtpClient smtpclient)
         {
             this.context = context;
             eventManager = new EventManager(this.context);
+            invitationManager = new InvitationManager(this.context, smtpclient);
         }
 
         // GET api/events
@@ -29,8 +31,10 @@ namespace EventPlanning.service.Controllers
             return eventManager.GetEvents();
         }
 
-        // GET api/events/1
+        // events/{1}/partial
+        // GET api/user/1/events
         [HttpGet("{userId}")]
+        [Route("user/{userId}/events")] // TODO: test this
         public List<DAL.Event> GetEvents(int userId)
         {
             return eventManager.GetUserEvents(userId);
@@ -43,19 +47,23 @@ namespace EventPlanning.service.Controllers
             return eventManager.GetEvents(pattern);
         }
 
+        // TODO: api/events/search?dateFrom=2017-01-03&dateTo=xxxx
         // GET api/events/search-by-date/2017-01-03/2017-05-08
-        [HttpGet("search-by-date/{dateFrom:datetime}/{dateTo:datetime?}")]
+        //[HttpGet("search-by-date/{dateFrom:datetime}/{dateTo:datetime?}")]
+        [HttpGet("search")]
         public List<DAL.Event> GetEvents(DateTime dateFrom, DateTime? dateTo = null)
         {
             return eventManager.GetEvents(dateFrom, dateTo ?? dateFrom);
         }
 
+        // TODO: events/{id}/activities
         [HttpGet("activities/{eventId}")]
         public List<DAL.Activity> GetEventActivities(int eventId)
         {
             return eventManager.GetEventActivities(eventId);
         }
 
+        // TODO: move this to activities controller
         // GET api/events/activities
         [HttpGet("activities")]
         public List<DAL.Activity> GetActivities()
@@ -63,6 +71,8 @@ namespace EventPlanning.service.Controllers
             return eventManager.GetActivities();
         }
 
+        // TODO: move this to activities controller
+        // TODO: api/activities/types
         // GET api/events/activity-types
         [HttpGet("activity-types")]
         public List<DAL.ActivityType> GetActivityTypes()
@@ -70,17 +80,7 @@ namespace EventPlanning.service.Controllers
             return eventManager.GetActivityTypes();
         }
 
-        [HttpGet("user/{user}")]
-        public int GetUserId(string user)
-        {
-            var client = new HttpClient();
-            var response = client.GetAsync("http://localhost:5011/api/users/" + user).Result;
-            var responseContent = response.Content.ReadAsStringAsync().Result;
-            var result = JsonConvert.DeserializeObject<int>(responseContent);
-
-            return result;
-        }
-
+        // TODO: api/events
         // POST api/events/create-event
         /// <summary>
         /// Creates new event
@@ -106,6 +106,7 @@ namespace EventPlanning.service.Controllers
             return eventManager.CreateEvent(eventData) ? StatusCode(200) : StatusCode(400);
         }
 
+        // TODO: Move this to activities controller
         // POST api/events/create-activity
         /// <summary>
         /// Creates new activity
@@ -129,6 +130,8 @@ namespace EventPlanning.service.Controllers
             return eventManager.CreateActivity(activityData) ? StatusCode(200) : StatusCode(400);
         }
 
+        // TODO: Move this to activities controller
+        // api/activities/types POST
         // POST api/events/create-activity-type
         /// <summary>
         /// Creates new activity type
@@ -206,7 +209,7 @@ namespace EventPlanning.service.Controllers
         [HttpPost("{eventId}/invite")]
         public IActionResult InviteToEvent([FromRoute]int eventId, [FromBody]UserData user)
         {
-            return eventManager.InviteToEvent(eventId, user) ? StatusCode(200) : StatusCode(400);
+            return invitationManager.InviteToEvent(eventId, user) ? StatusCode(200) : StatusCode(400);
         }
     }
 }

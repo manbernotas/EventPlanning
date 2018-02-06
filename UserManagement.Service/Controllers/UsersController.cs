@@ -24,13 +24,17 @@ namespace UserManagement.Service.Controllers
             return userManager.GetUsers();
         }
 
+        // TODO: return User (partial - UserDTO)
+        // api/users/{id}
         [HttpGet("{user}")]
         public int GetUserId(string user)
         {
             return userManager.GetUserId(user);
         }
 
-        // POST api/users/validate-user
+        // TODO: LOGIN USER - authenticate controller
+        // POST api/authenticate (login)
+        // DELETE api/authenticate (logout)
         /// <summary>
         /// Validates if password is valid for user
         /// </summary>
@@ -51,6 +55,7 @@ namespace UserManagement.Service.Controllers
             return userManager.IsPasswordValid(user);
         }
 
+        // TODO: POST api/users
         // POST api/users/create-user
         /// <summary>
         /// Creates new user

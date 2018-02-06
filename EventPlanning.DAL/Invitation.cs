@@ -8,7 +8,8 @@ namespace EventPlanning.DAL
     {
         public int EventId { get; set; }
         public int UserId { get; set; }
-        public string SendTo { get; set; }
+        public string SentTo { get; set; }
+        public DateTime DateSent { get; set; }
         public string Status { get; set; }
     }
 }

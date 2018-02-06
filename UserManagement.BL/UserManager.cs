@@ -21,6 +21,7 @@ namespace UserManagement.BL
             repository = new Repository(this.context);
         }
 
+        // TODO: extract Partial User information that might be sent back to front end
         /// <summary>
         /// Returns all users
         /// </summary>

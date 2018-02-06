@@ -204,50 +204,6 @@ namespace EventPlanning.BL
         }
 
         /// <summary>
-        /// Sends email with invitation
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public bool InviteToEvent(int eventId, UserData user)
-        {
-            if (user.Email == null)
-            {
-                return false;
-            }
-
-            var ev = GetEvent(eventId);
-            var mailBody = new StringBuilder();
-            mailBody.AppendFormat("You have been invited to event named: {0}.", ev.Title).AppendLine();
-            mailBody.Append("To confirm participation you must click link below.").AppendLine();
-            mailBody.AppendFormat("http://localhost:5010/api/events/accept/{0}/{1}", eventId, user.Id);
-
-            MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-            
-            mail.From = new MailAddress("eventinvitator@gmail.com");
-            mail.To.Add(user.Email);
-            mail.Subject = "Invitation to event";
-            mail.Body = mailBody.ToString();
-
-            SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("eventinvitator@gmail.com", "Event_3000");
-            SmtpServer.EnableSsl = true;
-
-            SmtpServer.Send(mail);
-
-            var invitation = new Invitation()
-            {
-                EventId = eventId,
-                SendTo = user.Email,
-                UserId = user.Id,
-                Status = "Waiting",
-            };
-
-            return repository.AddInvitation(invitation);
-        }
-
-        /// <summary>
         /// Adds activities to event
         /// </summary>
         /// <param name="activityData"></param>
@@ -324,6 +280,7 @@ namespace EventPlanning.BL
                 UserId = participant.UserId,
             };
 
+            // TODO: check if event exists; then add as a participant
             try
             {
                 return repository.SaveParticipant(newParticipant);

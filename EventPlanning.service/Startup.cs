@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using EventPlanning.BL;
+using System;
 
 namespace EventPlanning.service
 {
@@ -16,19 +18,25 @@ namespace EventPlanning.service
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DAL.EventContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc().AddJsonOptions(options =>
+            string smtpUser = Environment.GetEnvironmentVariable("smtpUser");
+            string smtpPass = Environment.GetEnvironmentVariable("smtpPass");
+
+            if (smtpUser == null || smtpPass == null)
             {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
+                throw new Exception("Smtp credentials not provided");
+            }
+
+            services.AddSingleton<ISmtpClient>(x => new SmtpWrapper("smtp.gmail.com", 587, smtpUser, smtpPass, true));
+
+            services.AddMvc().AddJsonOptions(options =>
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
