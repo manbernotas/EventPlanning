@@ -35,7 +35,7 @@ namespace EventPlanning.BL
 
             var sentTo = SendInvitation(eventId, user);
 
-            if (sentTo != "")
+            if (sentTo != string.Empty)
             {
                 return CreateInvitation(eventId, user, sentTo);
             }
@@ -61,7 +61,7 @@ namespace EventPlanning.BL
                 return "Notification";
             }
 
-            return "";
+            return string.Empty;
         }
 
         public bool SendNotification(int eventId, UserData user)
@@ -114,14 +114,14 @@ namespace EventPlanning.BL
                 return false;
             }
 
-            mailBody.AppendFormat("{0}/{1}/{2}",acceptLink, eventId, user.Id);
+            mailBody.AppendFormat("{0}/{1}/{2}", acceptLink, eventId, user.Id);
 
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("eventinvitator@gmail.com");
             mail.Subject = "Invitation to event";
             mail.Body = mailBody.ToString();
 
-            if (user.Email == null || user.Email == "")
+            if (string.IsNullOrEmpty(user.Email))
             {
                 return false;
             }
@@ -131,11 +131,7 @@ namespace EventPlanning.BL
                 mail.To.Add(user.Email);
                 smtpServer.Send(mail);
             }
-            catch (FormatException)
-            {
-                return false;
-            }
-            catch (SmtpFailedRecipientsException)
+            catch (Exception ex) when (ex is FormatException || ex is SmtpFailedRecipientsException)
             {
                 return false;
             }

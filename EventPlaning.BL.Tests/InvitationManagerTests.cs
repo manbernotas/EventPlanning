@@ -110,7 +110,7 @@ namespace EventPlanning.BL.Tests
             }
 
             [TestMethod]
-            public void InviteToEventFail()
+            public void InviteToEventFailEventNotExist()
             {
                 var user = new UserData()
                 {
@@ -134,7 +134,7 @@ namespace EventPlanning.BL.Tests
             }
 
             [TestMethod]
-            public void SendMailFail()
+            public void SendMailFailIncorrectEmailFormat()
             {
                 var user = new UserData()
                 {
@@ -160,14 +160,14 @@ namespace EventPlanning.BL.Tests
             }
 
             [TestMethod]
-            public void SendInvitationFail()
+            public void SendInvitationFailNoEmailOrId()
             {
                 var user = new UserData()
                 {
                     Name = "Event",
                 };
 
-                Assert.AreEqual("", invitationManager.SendInvitation(1, user));
+                Assert.AreEqual(string.Empty, invitationManager.SendInvitation(1, user));
             }
 
             [TestMethod]
@@ -184,14 +184,14 @@ namespace EventPlanning.BL.Tests
             }
 
             [TestMethod]
-            public void CreateInvitationFail()
+            public void CreateInvitationFailSentToEmpty()
             {
                 var user = new UserData()
                 {
                     Name = "Event",
                 };
 
-                Assert.IsFalse(invitationManager.CreateInvitation(1, user, ""));
+                Assert.IsFalse(invitationManager.CreateInvitation(1, user, string.Empty));
             }
         }
     }
