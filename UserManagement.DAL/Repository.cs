@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace UserManagement.DAL
@@ -30,6 +31,11 @@ namespace UserManagement.DAL
             }
 
             return true;
+        }
+
+        public int GetUserId(string user)
+        {
+            return context.User.SingleOrDefault(u => u.UserName == user || u.Email == user).Id;
         }
     }
 }

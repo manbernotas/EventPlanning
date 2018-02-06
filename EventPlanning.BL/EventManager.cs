@@ -3,6 +3,8 @@ using EventPlanning.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Text;
 
 namespace EventPlanning.BL
 {
@@ -278,6 +280,7 @@ namespace EventPlanning.BL
                 UserId = participant.UserId,
             };
 
+            // TODO: check if event exists; then add as a participant
             try
             {
                 return repository.SaveParticipant(newParticipant);

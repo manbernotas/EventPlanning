@@ -21,6 +21,7 @@ namespace UserManagement.BL
             repository = new Repository(this.context);
         }
 
+        // TODO: extract Partial User information that might be sent back to front end
         /// <summary>
         /// Returns all users
         /// </summary>
@@ -28,6 +29,16 @@ namespace UserManagement.BL
         public List<User> GetUsers()
         {
             return repository.GetUsers().ToList();
+        }
+
+        /// <summary>
+        /// Returns user Id by username or email
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public int GetUserId(string user)
+        {
+            return repository.GetUserId(user);
         }
 
         /// <summary>
@@ -102,6 +113,7 @@ namespace UserManagement.BL
                 {
                     UserName = user.Name,
                     Password = passwordHash,
+                    Email = user.Email,
                     Salt = salt,
                 };
 
