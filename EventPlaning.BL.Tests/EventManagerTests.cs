@@ -43,6 +43,19 @@ namespace EventPlanning.BL.Tests
                         ActivityId = 2,
                         EventId = 1,
                     }
+                },
+                Participants = new List<Participant>()
+                {
+                    new Participant()
+                    {
+                        EventId = 1,
+                        UserId = 1,
+                    },
+                    new Participant()
+                    {
+                        EventId = 1,
+                        UserId = 2,
+                    },
                 }
             });
 
@@ -87,6 +100,18 @@ namespace EventPlanning.BL.Tests
             context.Database.EnsureDeleted();
             eventManager = null;
             context = null;
+        }
+
+        [TestMethod]
+        public void GetParticipantsOK()
+        {
+            Assert.AreEqual(2, eventManager.GetParticipants(1));
+        }
+
+        [TestMethod]
+        public void GetParticipantsFailEventNotExist()
+        {
+            Assert.AreEqual(0, eventManager.GetParticipants(2));
         }
 
         [TestMethod]
@@ -185,6 +210,18 @@ namespace EventPlanning.BL.Tests
             };
 
             Assert.IsFalse(eventManager.AddActivityToEvent(2, activity));
+        }
+
+        [TestMethod]
+        public void GetMaxParticipantsOK()
+        {
+            Assert.AreEqual(8, eventManager.GetMaxParticipants(1));
+        }
+
+        [TestMethod]
+        public void GetMaxParticipantsFailEventNotExist()
+        {
+            Assert.AreEqual(0, eventManager.GetMaxParticipants(2));
         }
 
         [TestMethod]

@@ -4,9 +4,6 @@ namespace EventPlanning.DAL
 {
     public class Participant
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         [ForeignKey("Event")]
         public int EventId { get; set; }
 

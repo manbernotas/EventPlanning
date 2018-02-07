@@ -23,6 +23,15 @@ namespace UserManagement.BL
         }
 
         /// <summary>
+        /// Returns UserNames of all users
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllUserNames()
+        {
+            return repository.GetUsers().Select(u => u.UserName).ToList();
+        }
+
+        /// <summary>
         /// Returns all users
         /// </summary>
         /// <returns></returns>

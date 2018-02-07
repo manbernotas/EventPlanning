@@ -1,9 +1,13 @@
 ﻿using EventPlanning.DAL;
 using EventPlanning.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Mail;
+using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace EventPlanning.BL
@@ -64,16 +68,47 @@ namespace EventPlanning.BL
             return partialEvent;
         }
 
-        private int GetMaxParticipants(int id)
+        /// <summary>
+        /// Returns max participants according to event activities
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public int GetMaxParticipants(int eventId)
         {
-            throw new NotImplementedException();
+            var eventActivities = GetEventActivities(eventId);
+
+            if (eventActivities == null)
+            {
+                return 0;
+            }
+
+            return eventActivities.Select(ea => ea.MaxParticipants).Sum();
         }
 
+        /// <summary>
+        /// Returns username from user service
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public string GetUserName(int userId)
         {
-            throw new NotImplementedException();
+            var client = new HttpClient();
+            var serializer = new DataContractJsonSerializer(typeof(int));
+            var jsonInString = JsonConvert.SerializeObject(userId);
+            var url = new StringBuilder();
+            url.AppendFormat("http://localhost:5011/api/users/{0}/partial", userId);
+            var response = client.GetAsync(url.ToString()).Result;
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<PartialUser>(responseContent);
+
+            return result.UserName;
         }
 
+        /// <summary>
+        /// Returns participants count
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         public int GetParticipants(int eventId)
         {
             return repository.GetParticipants(eventId).ToList().Count;

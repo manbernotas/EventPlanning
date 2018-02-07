@@ -18,8 +18,15 @@ namespace UserManagement.Service.Controllers
             userManager = new UserManager(this.context);
         }
 
-        // GET api/users/1
-        [HttpGet("{userId}")]
+        // GET api/users
+        [HttpGet]
+        public List<string> GetAllUserNames()
+        {
+            return userManager.GetAllUserNames();
+        }
+
+        // GET api/users/1/partial
+        [HttpGet("{userId}/partial")]
         public PartialUser GetPartialUser(int userId)
         {
             return userManager.GetPartialUser(userId);
