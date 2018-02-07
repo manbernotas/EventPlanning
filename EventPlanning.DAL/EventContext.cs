@@ -10,7 +10,7 @@ namespace EventPlanning.DAL
 
         public DbSet<Activity> Activity { get; set; }
         public DbSet<ActivityType> ActivityType { get; set; }
-        public DbSet<Participant> Particiant { get; set; }
+        public DbSet<Participant> Participant { get; set; }
         public DbSet<Event> Event { get; set; }
         public DbSet<EventActivity> EventActivity { get; set; }
         public DbSet<Invitation> Invitation { get; set; }

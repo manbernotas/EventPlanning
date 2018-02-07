@@ -103,6 +103,31 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void LeaveEventOK()
+        {
+            var participant = new ParticipantData()
+            {
+                EventId = 1,
+                UserId = 1,
+            };
+
+            eventManager.LeaveEvent(participant);
+
+            Assert.AreEqual(1, eventManager.GetParticipants(1));
+        }
+
+        [TestMethod]
+        public void LeaveEventFailNoUserId()
+        {
+            var participant = new ParticipantData()
+            {
+                EventId = 1,
+            };
+
+            Assert.IsFalse(eventManager.LeaveEvent(participant));
+        }
+
+        [TestMethod]
         public void GetParticipantsOK()
         {
             Assert.AreEqual(2, eventManager.GetParticipants(1));
