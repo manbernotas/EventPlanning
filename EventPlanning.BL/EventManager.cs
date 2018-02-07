@@ -40,6 +40,46 @@ namespace EventPlanning.BL
         }
 
         /// <summary>
+        /// Returns partial event data
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public PartialEvent GetPartialEvent(int eventId)
+        {
+            var ev = repository.GetEvent(eventId);
+            if (ev != null)
+            {
+                var partialEvent = new PartialEvent()
+                {
+                    Title = ev.Title,
+                    Creator = GetUserName(ev.UserId),
+                    Participants = GetParticipants(ev.Id),
+                    MaxParticipants = GetMaxParticipants(ev.Id),
+                };
+
+                return partialEvent;
+            }
+
+            return null;
+        }
+
+        private int GetMaxParticipants(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetUserName(int userId)
+        {
+            // Should I call user service here?
+            throw new NotImplementedException();
+        }
+
+        public int GetParticipants(int eventId)
+        {
+            return repository.GetParticipants(eventId).ToList().Count;
+        }
+
+        /// <summary>
         /// Returns events where any event property contains pattern
         /// </summary>
         /// <param name="pattern"></param>
@@ -274,21 +314,18 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public bool ParticipateInEvent(ParticipantData participant)
         {
+            if (repository.GetEvent(participant.EventId) == null)
+            {
+                return false;
+            }
+
             var newParticipant = new Participant()
             {
                 EventId = participant.EventId,
                 UserId = participant.UserId,
             };
-
-            // TODO: check if event exists; then add as a participant
-            try
-            {
-                return repository.SaveParticipant(newParticipant);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            
+            return repository.SaveParticipant(newParticipant);
         }
 
         /// <summary>
@@ -311,14 +348,7 @@ namespace EventPlanning.BL
                     ActivityTypeId = GetActivityTypeId(activityData.ActivityType),
                 };
 
-                try
-                {
-                    return repository.SaveActivity(newActivity);
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                return repository.SaveActivity(newActivity);
             }
 
             return false;
@@ -338,14 +368,7 @@ namespace EventPlanning.BL
                     Title = activityType.Title
                 };
 
-                try
-                {
-                    return repository.SaveActivityType(newActivityType);
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                return repository.SaveActivityType(newActivityType);
             }
 
             return false;

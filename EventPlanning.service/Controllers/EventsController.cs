@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Runtime.Serialization.Json;
-using System.Text;
 using EventPlanning.BL;
 using EventPlanning.Model;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace EventPlanning.service.Controllers
 {
@@ -31,11 +27,16 @@ namespace EventPlanning.service.Controllers
             return eventManager.GetEvents();
         }
 
-        // events/{1}/partial
-        // GET api/user/1/events
-        [HttpGet("{userId}")]
-        [Route("user/{userId}/events")] // TODO: test this
-        public List<DAL.Event> GetEvents(int userId)
+        // GET api/events/1/partial
+        [HttpGet("{eventId}/partial")]
+        public DAL.PartialEvent GetPartialEventData(int eventId)
+        {
+            return eventManager.GetPartialEvent(eventId);
+        }
+
+        // GET api/events/user/1/
+        [HttpGet("user/{userId}")]
+        public List<DAL.Event> GetUserEvents(int userId)
         {
             return eventManager.GetUserEvents(userId);
         }
@@ -47,41 +48,21 @@ namespace EventPlanning.service.Controllers
             return eventManager.GetEvents(pattern);
         }
 
-        // TODO: api/events/search?dateFrom=2017-01-03&dateTo=xxxx
-        // GET api/events/search-by-date/2017-01-03/2017-05-08
-        //[HttpGet("search-by-date/{dateFrom:datetime}/{dateTo:datetime?}")]
+        // GET api/events/search?dateFrom=2017-01-03&dateTo=2017-05-08
         [HttpGet("search")]
         public List<DAL.Event> GetEvents(DateTime dateFrom, DateTime? dateTo = null)
         {
             return eventManager.GetEvents(dateFrom, dateTo ?? dateFrom);
         }
 
-        // TODO: events/{id}/activities
-        [HttpGet("activities/{eventId}")]
+        // GET api/events/1/activities
+        [HttpGet("{eventId}/activities")]
         public List<DAL.Activity> GetEventActivities(int eventId)
         {
             return eventManager.GetEventActivities(eventId);
         }
 
-        // TODO: move this to activities controller
-        // GET api/events/activities
-        [HttpGet("activities")]
-        public List<DAL.Activity> GetActivities()
-        {
-            return eventManager.GetActivities();
-        }
-
-        // TODO: move this to activities controller
-        // TODO: api/activities/types
-        // GET api/events/activity-types
-        [HttpGet("activity-types")]
-        public List<DAL.ActivityType> GetActivityTypes()
-        {
-            return eventManager.GetActivityTypes();
-        }
-
-        // TODO: api/events
-        // POST api/events/create-event
+        // POST api/events
         /// <summary>
         /// Creates new event
         /// </summary>
@@ -100,55 +81,10 @@ namespace EventPlanning.service.Controllers
         }
         */
         ///</remarks>
-        [HttpPost("create-event")]
+        [HttpPost]
         public IActionResult CreateEvent([FromBody]EventData eventData)
         {
             return eventManager.CreateEvent(eventData) ? StatusCode(200) : StatusCode(400);
-        }
-
-        // TODO: Move this to activities controller
-        // POST api/events/create-activity
-        /// <summary>
-        /// Creates new activity
-        /// </summary>
-        /// <param name="activityData"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /*
-        {
-	        "title":"Pandemic",
-	        "description":"Save the world",
-	        "minparticipants":2,
-	        "maxparticipants":4,
-	        "activitytype":"Board game"
-        }
-        */
-        ///</remarks>
-        [HttpPost("create-activity")]
-        public IActionResult CreateActivity([FromBody]ActivityData activityData)
-        {
-            return eventManager.CreateActivity(activityData) ? StatusCode(200) : StatusCode(400);
-        }
-
-        // TODO: Move this to activities controller
-        // api/activities/types POST
-        // POST api/events/create-activity-type
-        /// <summary>
-        /// Creates new activity type
-        /// </summary>
-        /// <param name="activityTypeData"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /*
-        {
-           "title":"Video game"
-        }
-        */
-        ///</remarks>
-        [HttpPost("create-activity-type")]
-        public IActionResult CreateActivityType([FromBody]ActivityTypeData activityTypeData)
-        {
-            return eventManager.CreateActivityType(activityTypeData) ? StatusCode(200) : StatusCode(400);
         }
 
         /// <summary>

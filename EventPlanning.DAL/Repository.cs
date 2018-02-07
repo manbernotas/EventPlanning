@@ -74,6 +74,11 @@ namespace EventPlanning.DAL
             return true;
         }
 
+        public IQueryable<Participant> GetParticipants(int eventId)
+        {
+            return context.Particiant.Where(p => p.EventId == eventId);
+        }
+
         public bool SaveEvent(Event newEvent)
         {
             try

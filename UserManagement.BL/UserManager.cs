@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UserManagement.DAL;
 using UserManagement.Model;
+using UserManagement.DTO;
 
 namespace UserManagement.BL
 {
@@ -21,7 +22,6 @@ namespace UserManagement.BL
             repository = new Repository(this.context);
         }
 
-        // TODO: extract Partial User information that might be sent back to front end
         /// <summary>
         /// Returns all users
         /// </summary>
@@ -29,6 +29,29 @@ namespace UserManagement.BL
         public List<User> GetUsers()
         {
             return repository.GetUsers().ToList();
+        }
+
+        /// <summary>
+        /// Returns partial user information
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public PartialUser GetPartialUser(int userId)
+        {
+            var user = repository.GetUser(userId);
+
+            if (user != null)
+            {
+                var partialUser = new PartialUser()
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                };
+
+                return partialUser;
+            }
+
+            return null;
         }
 
         /// <summary>
