@@ -47,20 +47,21 @@ namespace EventPlanning.BL
         public PartialEvent GetPartialEvent(int eventId)
         {
             var ev = repository.GetEvent(eventId);
-            if (ev != null)
-            {
-                var partialEvent = new PartialEvent()
-                {
-                    Title = ev.Title,
-                    Creator = GetUserName(ev.UserId),
-                    Participants = GetParticipants(ev.Id),
-                    MaxParticipants = GetMaxParticipants(ev.Id),
-                };
 
-                return partialEvent;
+            if (ev == null)
+            {
+                return null;
             }
 
-            return null;
+            var partialEvent = new PartialEvent()
+            {
+                Title = ev.Title,
+                Creator = GetUserName(ev.UserId),
+                Participants = GetParticipants(ev.Id),
+                MaxParticipants = GetMaxParticipants(ev.Id),
+            };
+
+            return partialEvent;
         }
 
         private int GetMaxParticipants(int id)
@@ -70,7 +71,6 @@ namespace EventPlanning.BL
 
         public string GetUserName(int userId)
         {
-            // Should I call user service here?
             throw new NotImplementedException();
         }
 

@@ -40,18 +40,12 @@ namespace UserManagement.BL
         {
             var user = repository.GetUser(userId);
 
-            if (user != null)
+            if (user == null)
             {
-                var partialUser = new PartialUser()
-                {
-                    UserName = user.UserName,
-                    Email = user.Email,
-                };
-
-                return partialUser;
+                return null;
             }
 
-            return null;
+            return new PartialUser(user.UserName, user.Email);
         }
 
         /// <summary>

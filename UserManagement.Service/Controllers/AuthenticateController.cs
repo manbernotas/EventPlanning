@@ -24,14 +24,14 @@ namespace UserManagement.Service.Controllers
         [HttpPost]
         public void Post([FromBody]Model.UserData user)
         {
-            // TODO: implement
+            throw new NotImplementedException();
         }
 
         // DELETE api/authenticate (logout)
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            // TODO: implement
+            throw new NotImplementedException();
         }
     }
 }
