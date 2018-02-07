@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EventPlanning.BL\EventPlanning.BL.csproj" />
+    <ProjectReference Include="..\Utilities\EventPlanning.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
