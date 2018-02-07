@@ -54,7 +54,7 @@ namespace UserManagement.BL
                 return null;
             }
 
-            return new PartialUser(user.UserName, user.Email);
+            return new PartialUser(user.UserName, user.Email, user.Id);
         }
 
         /// <summary>

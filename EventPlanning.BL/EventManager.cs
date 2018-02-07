@@ -1,13 +1,8 @@
 ﻿using EventPlanning.DAL;
 using EventPlanning.Model;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Mail;
-using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace EventPlanning.BL
@@ -92,16 +87,12 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public string GetUserName(int userId)
         {
-            var client = new HttpClient();
-            var serializer = new DataContractJsonSerializer(typeof(int));
-            var jsonInString = JsonConvert.SerializeObject(userId);
             var url = new StringBuilder();
             url.AppendFormat("http://localhost:5011/api/users/{0}/partial", userId);
-            var response = client.GetAsync(url.ToString()).Result;
-            var responseContent = response.Content.ReadAsStringAsync().Result;
-            var result = JsonConvert.DeserializeObject<PartialUser>(responseContent);
+            var partialUser = new PartialUser();
+            partialUser = (PartialUser)Utilities.Utilities.GetAsync(userId, url.ToString(), partialUser);
 
-            return result.UserName;
+            return partialUser.UserName;
         }
 
         /// <summary>
