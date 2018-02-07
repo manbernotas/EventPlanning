@@ -91,7 +91,7 @@ namespace EventPlanning.BL
             url.AppendFormat("http://localhost:5011/api/users/{0}/partial", userId);
             var partialUser = new PartialUser();
             partialUser = (PartialUser)Utilities.Utilities.GetAsync(userId, url.ToString(), partialUser);
-
+            
             return partialUser.UserName;
         }
 

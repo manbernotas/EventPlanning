@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.Serialization.Json;
-using System.Text;
 
-namespace Utilities
+namespace EventPlanning.Utilities
 {
     public static class Utilities
     {

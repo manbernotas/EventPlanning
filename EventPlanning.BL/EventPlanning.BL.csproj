@@ -7,7 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EventPlanning.DAL\EventPlanning.DAL.csproj" />
     <ProjectReference Include="..\EventPlanning.DTO\EventPlanning.Model.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    <ProjectReference Include="..\Utilities\EventPlanning.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
