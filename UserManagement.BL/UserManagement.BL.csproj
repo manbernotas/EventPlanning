@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Model\UserManagement.Model.csproj" />
     <ProjectReference Include="..\UserManagement.DAL\UserManagement.DAL.csproj" />
+    <ProjectReference Include="..\UserManagement.DTO\UserManagement.DTO.csproj" />
   </ItemGroup>
 
 </Project>

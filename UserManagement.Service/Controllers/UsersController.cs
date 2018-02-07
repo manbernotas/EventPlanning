@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UserManagement.Model;
 using UserManagement.BL;
+using UserManagement.DTO;
 
 namespace UserManagement.Service.Controllers
 {
@@ -17,46 +18,21 @@ namespace UserManagement.Service.Controllers
             userManager = new UserManager(this.context);
         }
 
-        // GET api/users
-        [HttpGet]
-        public List<DAL.User> GetUsers()
+        // GET api/users/1
+        [HttpGet("{userId}")]
+        public PartialUser GetPartialUser(int userId)
         {
-            return userManager.GetUsers();
+            return userManager.GetPartialUser(userId);
         }
-
-        // TODO: return User (partial - UserDTO)
-        // api/users/{id}
+        
+        // GET api/users/Mantas
         [HttpGet("{user}")]
         public int GetUserId(string user)
         {
             return userManager.GetUserId(user);
         }
 
-        // TODO: LOGIN USER - authenticate controller
-        // POST api/authenticate (login)
-        // DELETE api/authenticate (logout)
-        /// <summary>
-        /// Validates if password is valid for user
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        /// <remarks>
-        ///
-        /*
-        {
-            "name":"Mantas",
-            "password":"test"
-        }
-        */
-        /// </remarks>
-        [HttpPost("validate-user")]
-        public bool IsPasswordValid([FromBody]UserData user)
-        {
-            return userManager.IsPasswordValid(user);
-        }
-
-        // TODO: POST api/users
-        // POST api/users/create-user
+        // POST api/users
         /// <summary>
         /// Creates new user
         /// </summary>
@@ -71,7 +47,7 @@ namespace UserManagement.Service.Controllers
         }
         */
         /// </remarks>
-        [HttpPost("create-user")]
+        [HttpPost]
         public IActionResult CreateUser([FromBody]UserData user)
         {
             return userManager.CreateUser(user) ? StatusCode(200) : StatusCode(400);

@@ -37,5 +37,10 @@ namespace UserManagement.DAL
         {
             return context.User.SingleOrDefault(u => u.UserName == user || u.Email == user).Id;
         }
+
+        public User GetUser(int userId)
+        {
+            return context.User.SingleOrDefault(u => u.Id == userId);
+        }
     }
 }
