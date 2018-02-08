@@ -185,9 +185,14 @@ namespace EventPlanning.BL
 
         public bool LeaveEvent(ParticipantData participantData)
         {
+            if (participantData.UserId == default(int) || participantData.EventId == default(int))
+            {
+                return false;
+            }
+
             var ev = repository.GetEvent(participantData.EventId);
 
-            if (ev == null || participantData.UserId == 0)
+            if (ev == null)
             {
                 return false;
             }
