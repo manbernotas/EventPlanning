@@ -113,12 +113,12 @@ namespace EventPlanning.BL
         public List<Event> GetEvents(string pattern)
         {
             return repository.GetEvents()
-                .Where(e => ((e.Address != null && e.Address.Contains(pattern))
+                .Where(e => (e.Address != null && e.Address.Contains(pattern))
                          || (e.Title != null && e.Title.Contains(pattern))
                          || (e.Description != null && e.Description.Contains(pattern))
                          || (e.UserId.ToString().Contains(pattern))
                          || (e.Id.ToString().Contains(pattern)))
-                         && e.Type == 0)
+                .Where(e => e.Type == (int)Event.EventTypes.Public)
                 .ToList();
         }
 
@@ -132,8 +132,8 @@ namespace EventPlanning.BL
         {
             return repository.GetEvents()
                 .Where(e => e.DateFrom >= dateFrom.Date
-                         && e.DateTo <= dateTo.Date
-                         && e.Type == 0)
+                         && e.DateTo <= dateTo.Date)
+                .Where(e => e.Type == (int)Event.EventTypes.Public)
                 .ToList();
         }
 
@@ -236,17 +236,18 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public Event CopyEventDataToEvent(EventData eventData)
         {
-            int type;
+            Event.EventTypes type;
+
             switch (eventData.Type)
             {
                 case "Public":
-                    type = (int)Event.EventTypes.Public;
+                    type = Event.EventTypes.Public;
                     break;
                 case "Private":
-                    type = (int)Event.EventTypes.Private;
+                    type = Event.EventTypes.Private;
                     break;
                 default:
-                    type = (int)Event.EventTypes.Public;
+                    type = Event.EventTypes.Public;
                     break;
             }
             var newEvent = new Event()
@@ -257,7 +258,7 @@ namespace EventPlanning.BL
                 Address = eventData.Address,
                 Description = eventData.Description,
                 UserId = eventData.UserId,
-                Type = type,
+                Type = (int)type,
             };
 
             return newEvent;
