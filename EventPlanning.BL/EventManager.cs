@@ -183,6 +183,25 @@ namespace EventPlanning.BL
             return false;
         }
 
+        public bool LeaveEvent(ParticipantData participantData)
+        {
+            if (participantData.UserId == default(int) || participantData.EventId == default(int))
+            {
+                return false;
+            }
+
+            var ev = repository.GetEvent(participantData.EventId);
+
+            if (ev == null)
+            {
+                return false;
+            }
+
+            var participant = repository.GetParticipant(participantData.EventId, participantData.UserId);
+
+            return repository.DeleteParticipant(participant);
+        }
+
         /// <summary>
         /// Returns activity Id
         /// </summary>

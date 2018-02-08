@@ -76,7 +76,12 @@ namespace EventPlanning.DAL
 
         public IQueryable<Participant> GetParticipants(int eventId)
         {
-            return context.Particiant.Where(p => p.EventId == eventId);
+            return context.Participant.Where(p => p.EventId == eventId);
+        }
+
+        public Participant GetParticipant(int eventId, int userId)
+        {
+            return context.Participant.SingleOrDefault(p => p.EventId == eventId && p.UserId == userId);
         }
 
         public bool SaveEvent(Event newEvent)
@@ -113,7 +118,7 @@ namespace EventPlanning.DAL
         {
             try
             {
-                context.Particiant.Add(participant);
+                context.Participant.Add(participant);
                 context.SaveChanges();
             }
             catch (DbUpdateException)
@@ -179,6 +184,21 @@ namespace EventPlanning.DAL
             try
             {
                 context.Invitation.Add(invitation);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool DeleteParticipant(Participant participant)
+        {
+            try
+            {
+                context.Participant.Remove(participant);
                 context.SaveChanges();
             }
             catch (DbUpdateException)

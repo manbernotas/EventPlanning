@@ -142,6 +142,12 @@ namespace EventPlanning.service.Controllers
             return eventManager.RemoveActivityFromEvent(eventId, activityData) ? StatusCode(200) : StatusCode(400);
         }
 
+        [HttpDelete("leave")]
+        public IActionResult LeaveEvent([FromBody]ParticipantData participant)
+        {
+            return eventManager.LeaveEvent(participant) ? StatusCode(200) : StatusCode(400);
+        }
+
         [HttpPost("{eventId}/invite")]
         public IActionResult InviteToEvent([FromRoute]int eventId, [FromBody]UserData user)
         {
