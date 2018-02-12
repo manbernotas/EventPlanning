@@ -22,9 +22,9 @@ namespace EventPlanning.service.Controllers
 
         // GET api/events
         [HttpGet]
-        public List<DAL.Event> GetEvents()
+        public List<DAL.PartialEvent> GetPartialEvents()
         {
-            return eventManager.GetEvents();
+            return eventManager.GetPartialEvents();
         }
 
         // GET api/events/1/partial
