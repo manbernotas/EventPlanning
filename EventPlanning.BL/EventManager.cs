@@ -20,12 +20,20 @@ namespace EventPlanning.BL
         }
 
         /// <summary>
-        /// Return all events
+        /// Return all events partial data
         /// </summary>
         /// <returns></returns>
-        public List<Event> GetEvents()
+        public List<PartialEvent> GetPartialEvents()
         {
-            return repository.GetEvents().ToList();
+            var events = repository.GetEvents().ToList();
+            var partialEvents = new List<PartialEvent>();
+
+            foreach (var ev in events)
+            {
+                partialEvents.Add(GetPartialEvent(ev.Id));
+            }
+
+            return partialEvents;
         }
 
         /// <summary>
@@ -154,7 +162,7 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public bool CreateEvent(EventData eventData)
         {
-            var events = GetEvents();
+            var events = repository.GetEvents();
 
             if (eventData != null && events.FirstOrDefault(e => e.Title == eventData.Title) == null)
             {
