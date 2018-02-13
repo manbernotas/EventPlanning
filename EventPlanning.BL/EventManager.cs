@@ -114,6 +114,28 @@ namespace EventPlanning.BL
         }
 
         /// <summary>
+        /// Returns if event contains pattern
+        /// </summary>
+        /// <param name="ev"></param>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public bool EventContains(Event ev, string pattern)
+        {
+            var s = new StringBuilder();
+            s.Append(ev.Title)
+             .Append(ev.Description)
+             .Append(ev.UserId)
+             .Append(ev.Id);
+             
+            if (ev.Address != null)
+            {
+                s.Append(ev.Address.FullAddress());
+            }
+
+            return s.ToString().Contains(pattern);
+        }
+
+        /// <summary>
         /// Returns events where any event property contains pattern
         /// </summary>
         /// <param name="pattern"></param>
@@ -121,15 +143,7 @@ namespace EventPlanning.BL
         public List<Event> GetEvents(string pattern)
         {
             return repository.GetEvents()
-                .Where(e => (e.Title != null && e.Title.Contains(pattern))
-                         || (e.Description != null && e.Description.Contains(pattern))
-                         || (e.UserId.ToString().Contains(pattern))
-                         || (e.Id.ToString().Contains(pattern))
-                         || (e.Address.City != null && e.Address.City.Contains(pattern))
-                         || (e.Address.Country != null && e.Address.Country.Contains(pattern))
-                         || (e.Address.AddressLine1 != null && e.Address.AddressLine1.Contains(pattern))
-                         || (e.Address.AddressLine2 != null && e.Address.AddressLine2.Contains(pattern))
-                         || (e.Address.Province != null && e.Address.Province.Contains(pattern)))
+                .Where(e => EventContains(e, pattern))
                 .Where(e => e.Type == (int)Event.EventTypes.Public)
                 .ToList();
         }
@@ -175,30 +189,20 @@ namespace EventPlanning.BL
             {
                 var newEvent = CopyEventDataToEvent(eventData);
 
-                if (newEvent == null)
+                if (newEvent == null || newEvent.Address == null)
                 {
                     return false;
                 }
 
-                if (!repository.SaveEvent(newEvent))
-                {
-                    return false;
-                }
+                repository.SaveEvent(newEvent);
+                repository.SaveAddress(newEvent.Address);
 
-                var eventId = newEvent.Id; 
-                var eventActivities = CopyToEventActivities(eventId, eventData.Activities);
+                var eventActivities = CopyToEventActivities(newEvent.Id, eventData.Activities);
 
                 if (eventActivities != null)
                 {
                     repository.SaveEventActivities(eventActivities);
                 }
-
-                if (newEvent.Address == null)
-                {
-                    return false;
-                }
-
-                repository.SaveAddress(newEvent.Address);
 
                 return true;
             }
@@ -293,33 +297,13 @@ namespace EventPlanning.BL
                 Title = eventData.Title,
                 DateFrom = Convert.ToDateTime(eventData.DateFrom),
                 DateTo = Convert.ToDateTime(eventData.DateTo),
-                Address = GetAddress(eventData.Address),
+                Address = eventData.Address,
                 Description = eventData.Description,
                 UserId = eventData.UserId,
                 Type = (int)type,
             };
 
             return newEvent;
-        }
-
-        /// <summary>
-        /// Converts array of strings to Address
-        /// </summary>
-        /// <param name="adrs"></param>
-        /// <returns></returns>
-        public Address GetAddress(string[] adrs)
-        {
-            var address = new Address()
-            {
-                AddressLine1 = adrs[0],
-                AddressLine2 = adrs[1],
-                Province = adrs[2],
-                City = adrs[3],
-                Country = adrs[4],
-                PostalCode = adrs[5],
-            };
-
-            return address;
         }
 
         /// <summary>
@@ -337,16 +321,14 @@ namespace EventPlanning.BL
                 return false;
             }
 
-            var newAddress = GetAddress(eventData.Address);
-
-            if (ev.Address != newAddress)
+            if (ev.Address != eventData.Address)
             {
-                ev.Address.Country = newAddress.Country;
-                ev.Address.AddressLine1 = newAddress.AddressLine1;
-                ev.Address.AddressLine2 = newAddress.AddressLine2;
-                ev.Address.City = newAddress.City;
-                ev.Address.Province = newAddress.Province;
-                ev.Address.PostalCode = newAddress.PostalCode;
+                ev.Address.Country = eventData.Address.Country;
+                ev.Address.AddressLine1 = eventData.Address.AddressLine1;
+                ev.Address.AddressLine2 = eventData.Address.AddressLine2;
+                ev.Address.City = eventData.Address.City;
+                ev.Address.Province = eventData.Address.Province;
+                ev.Address.PostalCode = eventData.Address.PostalCode;
 
                 repository.UpdateAddress(ev.Address);
             }

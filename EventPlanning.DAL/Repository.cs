@@ -131,7 +131,7 @@ namespace EventPlanning.DAL
 
         public Event GetEvent(int eventId)
         {
-            return context.Event.FirstOrDefault(e => e.Id == eventId);
+            return context.Event.Include(i => i.Address).FirstOrDefault(e => e.Id == eventId);
         }
 
         public bool Update(Event eventData)

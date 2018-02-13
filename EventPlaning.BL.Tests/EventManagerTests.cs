@@ -112,6 +112,58 @@ namespace EventPlanning.BL.Tests
         }
 
         [TestMethod]
+        public void EventContainsOKAddressContains()
+        {
+            var ev = new Event()
+            {
+                Address = new Address()
+                {
+                    AddressLine1 = "New address",
+                    City = "Vilnius"
+                }
+            };
+
+            Assert.IsTrue(eventManager.EventContains(ev, "New"));
+        }
+
+        [TestMethod]
+        public void EventContainsFailAddressNotContains()
+        {
+            var ev = new Event()
+            {
+                Address = new Address()
+                {
+                    AddressLine1 = "New address",
+                    City = "Vilnius"
+                }
+            };
+
+            Assert.IsFalse(eventManager.EventContains(ev, "Old"));
+        }
+
+        [TestMethod]
+        public void EventContainsOK()
+        {
+            var ev = new Event()
+            {
+                Title = "BG and VG event",
+            };
+
+            Assert.IsTrue(eventManager.EventContains(ev, "BG"));
+        }
+
+        [TestMethod]
+        public void EventContainsFail()
+        {
+            var ev = new Event()
+            {
+            };
+                
+
+            Assert.IsFalse(eventManager.EventContains(ev, "BG"));
+        }
+
+        [TestMethod]
         public void LeaveEventOK()
         {
             var participant = new ParticipantData()
@@ -268,14 +320,14 @@ namespace EventPlanning.BL.Tests
                 Title = "BG and VG event",
                 DateFrom = "2018-01-23",
                 DateTo = "2018-01-23",
-                Address = new string[] 
+                Address = new Address()
                 {
-                    "new g.1",
-                    null,
-                    "Vilniaus m.",
-                    "Vilnius",
-                    "Lithuania",
-                    "LT-08303"
+                    AddressLine1 = "new g.1",
+                    City = "Vilnius",
+                    Country = "Lithuania",
+                    Province = "Vilniaus m.",
+                    EventId = 1,
+                    PostalCode = "LT-08303",
                 },
             };
 
@@ -294,14 +346,14 @@ namespace EventPlanning.BL.Tests
                 Title = "BG and VG event",
                 DateFrom = "2018-01-23",
                 DateTo = "2018-01-23",
-                Address = new string[]
+                Address = new Address()
                 {
-                    "new g. 1",
-                    null,
-                    "Vilniaus m.",
-                    "Vilnius",
-                    "Lithuania",
-                    "LT-08303"
+                    AddressLine1 = "new g.1",
+                    City = "Vilnius",
+                    Country = "Lithuania",
+                    Province = "Vilniaus m.",
+                    EventId = 1,
+                    PostalCode = "LT-08303",
                 },
             };
 
