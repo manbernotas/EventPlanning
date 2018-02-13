@@ -37,7 +37,15 @@ namespace EventPlanning.BL.Tests
                     Title = "BG and VG event",
                     DateFrom = new DateTime(2018, 01, 23),
                     DateTo = new DateTime(2018, 01, 23),
-                    Address = "Test g. 93-3",
+                    Address = new Address()
+                    {
+                        AddressLine1 = "Ateities g. 10",
+                        City = "Vilnius",
+                        Country = "Lithuania",
+                        Province = "Vilniaus m.",
+                        EventId = 1,
+                        PostalCode = "LT-08303",
+                    },
                     EventActivities = new List<EventActivity>()
                 {
                     new EventActivity()

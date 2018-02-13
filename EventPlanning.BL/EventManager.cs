@@ -121,11 +121,15 @@ namespace EventPlanning.BL
         public List<Event> GetEvents(string pattern)
         {
             return repository.GetEvents()
-                .Where(e => (e.Address != null && e.Address.Contains(pattern))
-                         || (e.Title != null && e.Title.Contains(pattern))
+                .Where(e => (e.Title != null && e.Title.Contains(pattern))
                          || (e.Description != null && e.Description.Contains(pattern))
                          || (e.UserId.ToString().Contains(pattern))
-                         || (e.Id.ToString().Contains(pattern)))
+                         || (e.Id.ToString().Contains(pattern))
+                         || (e.Address.City != null && e.Address.City.Contains(pattern))
+                         || (e.Address.Country != null && e.Address.Country.Contains(pattern))
+                         || (e.Address.AddressLine1 != null && e.Address.AddressLine1.Contains(pattern))
+                         || (e.Address.AddressLine2 != null && e.Address.AddressLine2.Contains(pattern))
+                         || (e.Address.Province != null && e.Address.Province.Contains(pattern)))
                 .Where(e => e.Type == (int)Event.EventTypes.Public)
                 .ToList();
         }
@@ -162,42 +166,77 @@ namespace EventPlanning.BL
         /// <returns></returns>
         public bool CreateEvent(EventData eventData)
         {
-            var events = repository.GetEvents();
+            if (eventData == null)
+            {
+                return false;
+            }
 
-            if (eventData != null && events.FirstOrDefault(e => e.Title == eventData.Title) == null)
+            try
             {
                 var newEvent = CopyEventDataToEvent(eventData);
-                
-                try
-                {
-                    repository.SaveEvent(newEvent);
-                    var eventActivities = new List<EventActivity>();
 
-                    foreach (var activity in eventData.Activities)
-                    {
-                        eventActivities.Add(new EventActivity()
-                        {
-                            ActivityId = GetActivityId(activity) ?? 0,
-                            EventId = GetEventId(newEvent.Title) ?? 0,
-                        });
-                    }
-
-                    if (eventActivities != null)
-                    {
-                        return repository.SaveEventActivities(eventActivities);
-                    }
-
-                    return true;
-                }
-                catch (Exception)
+                if (newEvent == null)
                 {
                     return false;
                 }
-            }
 
-            return false;
+                if (!repository.SaveEvent(newEvent))
+                {
+                    return false;
+                }
+
+                var eventId = newEvent.Id; 
+                var eventActivities = CopyToEventActivities(eventId, eventData.Activities);
+
+                if (eventActivities != null)
+                {
+                    repository.SaveEventActivities(eventActivities);
+                }
+
+                if (newEvent.Address == null)
+                {
+                    return false;
+                }
+
+                repository.SaveAddress(newEvent.Address);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
+        /// <summary>
+        /// Copy string array to list of event activities
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="activities"></param>
+        /// <returns></returns>
+        public List<EventActivity> CopyToEventActivities(int? eventId, string[] activities)
+        {
+            var eventActivities = new List<EventActivity>();
+
+            foreach (var activity in activities)
+            {
+                eventActivities.Add(new EventActivity()
+                {
+                    ActivityId = GetActivityId(activity) ?? 0,
+                    EventId = eventId ?? 0,
+                    Activity = new Activity(),
+                    Event = new Event(),
+                });
+            }
+
+            return eventActivities;
+        }
+
+        /// <summary>
+        /// Deletes participant
+        /// </summary>
+        /// <param name="participantData"></param>
+        /// <returns></returns>
         public bool LeaveEvent(ParticipantData participantData)
         {
             if (participantData.UserId == default(int) || participantData.EventId == default(int))
@@ -226,16 +265,6 @@ namespace EventPlanning.BL
         {
             return repository.GetActivities().FirstOrDefault(a => a.Title == activity)?.Id;
         }
-
-        /// <summary>
-        /// Returns event Id
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public int? GetEventId(string title)
-        {
-            return repository.GetEvents().FirstOrDefault(e => e.Title == title)?.Id;
-        }
         
         /// <summary>
         /// Returns copy of EventData type as Event type
@@ -258,12 +287,13 @@ namespace EventPlanning.BL
                     type = Event.EventTypes.Public;
                     break;
             }
+
             var newEvent = new Event()
             {
                 Title = eventData.Title,
                 DateFrom = Convert.ToDateTime(eventData.DateFrom),
                 DateTo = Convert.ToDateTime(eventData.DateTo),
-                Address = eventData.Address,
+                Address = GetAddress(eventData.Address),
                 Description = eventData.Description,
                 UserId = eventData.UserId,
                 Type = (int)type,
@@ -272,6 +302,32 @@ namespace EventPlanning.BL
             return newEvent;
         }
 
+        /// <summary>
+        /// Converts array of strings to Address
+        /// </summary>
+        /// <param name="adrs"></param>
+        /// <returns></returns>
+        public Address GetAddress(string[] adrs)
+        {
+            var address = new Address()
+            {
+                AddressLine1 = adrs[0],
+                AddressLine2 = adrs[1],
+                Province = adrs[2],
+                City = adrs[3],
+                Country = adrs[4],
+                PostalCode = adrs[5],
+            };
+
+            return address;
+        }
+
+        /// <summary>
+        /// Updates event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="eventData"></param>
+        /// <returns></returns>
         public bool PatchEvent(int eventId, EventData eventData)
         {
             var ev = repository.GetEvent(eventId);
@@ -281,7 +337,20 @@ namespace EventPlanning.BL
                 return false;
             }
 
-            ev.Address = eventData.Address != ev.Address ? eventData.Address : ev.Address;
+            var newAddress = GetAddress(eventData.Address);
+
+            if (ev.Address != newAddress)
+            {
+                ev.Address.Country = newAddress.Country;
+                ev.Address.AddressLine1 = newAddress.AddressLine1;
+                ev.Address.AddressLine2 = newAddress.AddressLine2;
+                ev.Address.City = newAddress.City;
+                ev.Address.Province = newAddress.Province;
+                ev.Address.PostalCode = newAddress.PostalCode;
+
+                repository.UpdateAddress(ev.Address);
+            }
+
             var dateFrom = Convert.ToDateTime(eventData.DateFrom);
             ev.DateFrom = dateFrom != ev.DateFrom ? dateFrom : ev.DateFrom;
             var dateTo = Convert.ToDateTime(eventData.DateTo);

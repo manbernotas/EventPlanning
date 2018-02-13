@@ -76,7 +76,12 @@ namespace EventPlanning.service.Controllers
 	        "userid":1,
 	        "datefrom":"2017-01-02",
 	        "dateto":"2017-01-02",
-	        "address":"baltupio 1",
+	        "address":["new g.1",
+                    null,
+                    "Vilniaus m.",
+                    "Vilnius",
+                    "Lithuania",
+                    "LT-08303"],
 	        "activities":["Pandemic"]
         }
         */
