@@ -13,6 +13,7 @@ namespace EventPlanning.BL
 
         private Repository repository;
 
+
         public EventManager(EventContext context)
         {
             this.context = context;
@@ -129,7 +130,7 @@ namespace EventPlanning.BL
              
             if (ev.Address != null)
             {
-                s.Append(ev.Address.FullAddress());
+                s.Append(ev.Address.FullAddress);
             }
 
             return s.ToString().Contains(pattern);
@@ -195,8 +196,6 @@ namespace EventPlanning.BL
                 }
 
                 repository.SaveEvent(newEvent);
-                repository.SaveAddress(newEvent.Address);
-
                 var eventActivities = CopyToEventActivities(newEvent.Id, eventData.Activities);
 
                 if (eventActivities != null)
@@ -222,15 +221,18 @@ namespace EventPlanning.BL
         {
             var eventActivities = new List<EventActivity>();
 
-            foreach (var activity in activities)
+            if (activities != null)
             {
-                eventActivities.Add(new EventActivity()
+                foreach (var activity in activities)
                 {
-                    ActivityId = GetActivityId(activity) ?? 0,
-                    EventId = eventId ?? 0,
-                    Activity = new Activity(),
-                    Event = new Event(),
-                });
+                    eventActivities.Add(new EventActivity()
+                    {
+                        ActivityId = GetActivityId(activity) ?? 0,
+                        EventId = eventId ?? 0,
+                        Activity = new Activity(),
+                        Event = new Event(),
+                    });
+                }
             }
 
             return eventActivities;

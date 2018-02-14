@@ -106,7 +106,7 @@ namespace EventPlanning.DAL
                 context.EventActivity.AddRange(eventActivities);
                 context.SaveChanges();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
                 return false;
             }
@@ -216,7 +216,7 @@ namespace EventPlanning.DAL
                 context.Address.Add(address);
                 context.SaveChanges();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
                 return false;
             }

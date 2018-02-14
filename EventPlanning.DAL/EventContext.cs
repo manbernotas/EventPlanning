@@ -18,7 +18,7 @@ namespace EventPlanning.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Address>();
+            modelBuilder.Entity<Address>().HasKey(a => a.Id);
             modelBuilder.Entity<ActivityType>();
             modelBuilder.Entity<Activity>();
             modelBuilder.Entity<EventActivity>().HasKey(ea => new { ea.ActivityId, ea.EventId });
