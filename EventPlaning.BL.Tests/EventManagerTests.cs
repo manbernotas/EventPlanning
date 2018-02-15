@@ -30,7 +30,15 @@ namespace EventPlanning.BL.Tests
                 Title = "BG and VG event",
                 DateFrom = new DateTime(2018, 01, 23),
                 DateTo = new DateTime(2018, 01, 23),
-                Address = "Test g. 93-3",
+                Type = (int)Event.EventTypes.Public,
+                Address = new Address()
+                {
+                    AddressLine1 = "Ateities g. 10",
+                    City = "Vilnius",
+                    Country = "Lithuania",
+                    Province = "Vilniaus m.",
+                    PostalCode = "08303",
+                },
                 EventActivities = new List<EventActivity>()
                 {
                     new EventActivity()
@@ -100,6 +108,58 @@ namespace EventPlanning.BL.Tests
             context.Database.EnsureDeleted();
             eventManager = null;
             context = null;
+        }
+
+        [TestMethod]
+        public void EventContainsOKAddressContains()
+        {
+            var ev = new Event()
+            {
+                Address = new Address()
+                {
+                    AddressLine1 = "New address",
+                    City = "Vilnius"
+                }
+            };
+
+            Assert.IsTrue(eventManager.EventContains(ev, "New"));
+        }
+
+        [TestMethod]
+        public void EventContainsFailAddressNotContains()
+        {
+            var ev = new Event()
+            {
+                Address = new Address()
+                {
+                    AddressLine1 = "New address",
+                    City = "Vilnius"
+                }
+            };
+
+            Assert.IsFalse(eventManager.EventContains(ev, "Old"));
+        }
+
+        [TestMethod]
+        public void EventContainsOK()
+        {
+            var ev = new Event()
+            {
+                Title = "BG and VG event",
+            };
+
+            Assert.IsTrue(eventManager.EventContains(ev, "BG"));
+        }
+
+        [TestMethod]
+        public void EventContainsFail()
+        {
+            var ev = new Event()
+            {
+            };
+                
+
+            Assert.IsFalse(eventManager.EventContains(ev, "BG"));
         }
 
         [TestMethod]
@@ -259,16 +319,23 @@ namespace EventPlanning.BL.Tests
                 Title = "BG and VG event",
                 DateFrom = "2018-01-23",
                 DateTo = "2018-01-23",
-                Address = "new g.1",
+                Address = new Address()
+                {
+                    AddressLine1 = "new g.1",
+                    City = "Vilnius",
+                    Country = "Lithuania",
+                    Province = "Vilniaus m.",
+                    PostalCode = "08303",
+                },
             };
 
             eventManager.PatchEvent(1, newEventData);
 
-            Assert.AreEqual("new g.1", eventManager.GetEvent(1).Address);
+            Assert.AreEqual("new g.1", eventManager.GetEvent(1).Address.AddressLine1);
         }
 
         [TestMethod]
-        public void PatchEventFail()
+        public void PatchEventFailEventNotExist()
         {
             var newEventData = new EventData()
             {
@@ -277,7 +344,14 @@ namespace EventPlanning.BL.Tests
                 Title = "BG and VG event",
                 DateFrom = "2018-01-23",
                 DateTo = "2018-01-23",
-                Address = "new g.1",
+                Address = new Address()
+                {
+                    AddressLine1 = "new g.1",
+                    City = "Vilnius",
+                    Country = "Lithuania",
+                    Province = "Vilniaus m.",
+                    PostalCode = "08303",
+                },
             };
 
             Assert.IsFalse(eventManager.PatchEvent(2, newEventData));
@@ -299,7 +373,14 @@ namespace EventPlanning.BL.Tests
                 Description = "Board games",
                 DateFrom = new DateTime(2018, 01, 23),
                 DateTo = new DateTime(2018, 01, 23),
-                Address = "Test g. 93-3",
+                Address = new Address()
+                {
+                    AddressLine1 = "Ateities g. 10",
+                    City = "Vilnius",
+                    Country = "Lithuania",
+                    Province = "Vilniaus m.",
+                    PostalCode = "08303",
+                }
             });
 
             context.SaveChanges();
@@ -411,18 +492,6 @@ namespace EventPlanning.BL.Tests
         public void GetActivityIdFail()
         {
             Assert.IsNull(eventManager.GetActivityId("Mono"));
-        }
-
-        [TestMethod]
-        public void GetEventIdOK()
-        {
-            Assert.AreEqual(1, eventManager.GetEventId("BG and VG event"));
-        }
-
-        [TestMethod]
-        public void GetEventIdFail()
-        {
-            Assert.IsNull(eventManager.GetEventId("Mono"));
         }
     }
 }

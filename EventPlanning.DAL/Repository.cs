@@ -36,7 +36,7 @@ namespace EventPlanning.DAL
 
         public IQueryable<Event> GetUserEvents(int userId)
         {
-            return context.Event.Where(e => e.UserId == userId);
+            return context.Event.Where(e => e.UserId == userId).Include(i => i.Address);
         }
 
         public IQueryable<Activity> GetEventActivities(int eventId)
@@ -106,7 +106,7 @@ namespace EventPlanning.DAL
                 context.EventActivity.AddRange(eventActivities);
                 context.SaveChanges();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
                 return false;
             }
@@ -131,7 +131,7 @@ namespace EventPlanning.DAL
 
         public Event GetEvent(int eventId)
         {
-            return context.Event.FirstOrDefault(e => e.Id == eventId);
+            return context.Event.Include(i => i.Address).FirstOrDefault(e => e.Id == eventId);
         }
 
         public bool Update(Event eventData)
@@ -199,6 +199,36 @@ namespace EventPlanning.DAL
             try
             {
                 context.Participant.Remove(participant);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool SaveAddress(Address address)
+        {
+            try
+            {
+                context.Address.Add(address);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool UpdateAddress(Address address)
+        {
+            try
+            {
+                context.Address.Attach(address);
                 context.SaveChanges();
             }
             catch (DbUpdateException)

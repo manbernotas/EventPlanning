@@ -16,7 +16,7 @@ namespace EventPlanning.DAL
         public string Description { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public string Address { get; set; }
+        public Address Address { get; set; }
         public int Type { get; set; }
         public IEnumerable<EventActivity> EventActivities { get; set; }
         public IEnumerable<Participant> Participants { get; set; }
