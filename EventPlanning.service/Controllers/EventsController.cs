@@ -71,18 +71,19 @@ namespace EventPlanning.service.Controllers
         /// <remarks>
         /*
         {
-	        "title":"Pandemic challenge",
-	        "description":"Save the world together",
-	        "userid":1,
-	        "datefrom":"2017-01-02",
-	        "dateto":"2017-01-02",
-	        "address":["new g.1",
-                    null,
-                    "Vilniaus m.",
-                    "Vilnius",
-                    "Lithuania",
-                    "LT-08303"],
-	        "activities":["Pandemic"]
+            "userId": 1,
+            "title": "Pandemic challenge",
+            "description": "Save the world together",
+            "dateFrom": "2017-01-02T00:00:00",
+            "dateTo": "2017-01-02T00:00:00",
+            "address": {
+                "addressLine1": "Test 2",
+                "addressLine2": "",
+                "city": "Vilnius",
+                "province": "Vilniaus m.",
+                "country": "Lithuania",
+                "postalCode": "LT-08303"
+            }
         }
         */
         ///</remarks>

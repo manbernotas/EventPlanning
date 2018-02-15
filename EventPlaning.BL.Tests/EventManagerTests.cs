@@ -37,7 +37,7 @@ namespace EventPlanning.BL.Tests
                     City = "Vilnius",
                     Country = "Lithuania",
                     Province = "Vilniaus m.",
-                    PostalCode = 08303,
+                    PostalCode = "08303",
                 },
                 EventActivities = new List<EventActivity>()
                 {
@@ -325,7 +325,7 @@ namespace EventPlanning.BL.Tests
                     City = "Vilnius",
                     Country = "Lithuania",
                     Province = "Vilniaus m.",
-                    PostalCode = 08303,
+                    PostalCode = "08303",
                 },
             };
 
@@ -350,7 +350,7 @@ namespace EventPlanning.BL.Tests
                     City = "Vilnius",
                     Country = "Lithuania",
                     Province = "Vilniaus m.",
-                    PostalCode = 08303,
+                    PostalCode = "08303",
                 },
             };
 
@@ -379,7 +379,7 @@ namespace EventPlanning.BL.Tests
                     City = "Vilnius",
                     Country = "Lithuania",
                     Province = "Vilniaus m.",
-                    PostalCode = 08303,
+                    PostalCode = "08303",
                 }
             });
 
