@@ -22,6 +22,7 @@
     <ProjectReference Include="..\UserManagement.BL\UserManagement.BL.csproj" />
     <ProjectReference Include="..\UserManagement.DAL\UserManagement.DAL.csproj" />
     <ProjectReference Include="..\UserManagement.DTO\UserManagement.DTO.csproj" />
+    <ProjectReference Include="..\UserManagement.Utilities\UserManagement.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

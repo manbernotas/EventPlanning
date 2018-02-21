@@ -10,12 +10,12 @@ namespace UserManagement.DAL
         public UserContext(DbContextOptions<UserContext> options) : base(options) { }
 
         public DbSet<User> User { get; set; }
-        public DbSet<LoginLog> LoginLog { get; set; }
+        public DbSet<LoginAttempt> LoginAttempt { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasKey(user => user.UserName);
-            modelBuilder.Entity<LoginLog>();
+            modelBuilder.Entity<LoginAttempt>();
         }
     }
 }

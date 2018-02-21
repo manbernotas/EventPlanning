@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using UserManagement.BL;
@@ -28,9 +29,10 @@ namespace UserManagement.Service.Controllers
 
             if (user != null)
             {
-                var tokenString = userManager.CreateAccessToken(user);
+                var tokenString = TokenManager.CreateAccessToken(user);
                 response = Ok(new { token = tokenString });
-                userManager.CreateLoginRecord(user);
+                var ip = HttpContext.Connection.RemoteIpAddress.ToString();
+                userManager.CreateLoginRecord(user, ip);
             }
 
             return response;

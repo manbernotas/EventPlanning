@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Runtime.Serialization.Json;
+using System.Security.Claims;
 
 namespace EventPlanning.Utilities
 {
@@ -16,6 +18,13 @@ namespace EventPlanning.Utilities
             var result = JsonConvert.DeserializeObject(responseContent, deserObj.GetType());
 
             return result;
+        }
+
+        public static int GetCurrentUserId(ClaimsPrincipal user)
+        {
+            Int32.TryParse(user.FindFirst("jti")?.Value, out int id);
+
+            return id;
         }
     }
 }

@@ -43,11 +43,11 @@ namespace UserManagement.DAL
             return context.User.SingleOrDefault(u => u.Id == userId);
         }
 
-        public bool SaveLoginRecord(LoginLog login)
+        public bool SaveLoginRecord(LoginAttempt login)
         {
             try
             {
-                context.LoginLog.Add(login);
+                context.LoginAttempt.Add(login);
                 context.SaveChanges();
             }
             catch (DbUpdateException)

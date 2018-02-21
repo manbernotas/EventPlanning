@@ -42,51 +42,21 @@ namespace UserManagement.BL
         /// Creates Login record
         /// </summary>
         /// <param name="user"></param>
-        public bool CreateLoginRecord(User user)
+        public bool CreateLoginRecord(User user, string ip)
         {
-            if (user == null)
+            if (user == null || ip == null)
             {
                 return false;
             }
 
-            var login = new LoginLog()
+            var login = new LoginAttempt()
             {
                 UserId = user.Id,
+                IpAddress = ip,
                 LoginTime = DateTime.Now,
             };
 
             return repository.SaveLoginRecord(login);
-        }
-
-        /// <summary>
-        /// Creates access token
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public string CreateAccessToken(User user)
-        {
-            var jwtKey = Environment.GetEnvironmentVariable("JWTKey");
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString()),
-            };
-
-            var jwtIssuer = Environment.GetEnvironmentVariable("JWTIssuer");
-            var jwtAudience = Environment.GetEnvironmentVariable("JWTAudience");
-            var jwtExp = Environment.GetEnvironmentVariable("JWTExpInMin");
-            Int32.TryParse(jwtExp, out var jwtExpAfter);
-
-            var token = new JwtSecurityToken(
-                jwtIssuer,
-                jwtAudience,
-                claims,
-                expires: DateTime.Now.AddMinutes(jwtExpAfter),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         /// <summary>

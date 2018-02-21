@@ -18,6 +18,7 @@ namespace UserManagement.Service
                 try
                 {
                     var context = services.GetRequiredService<DAL.UserContext>();
+                    context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
 
                     context.SaveChanges();

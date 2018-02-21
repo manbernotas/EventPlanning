@@ -5,8 +5,7 @@ using UserManagement.BL;
 using UserManagement.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
-using System;
+using static UserManagement.Utilities.Utilities;
 
 namespace UserManagement.Service.Controllers
 {
@@ -26,6 +25,7 @@ namespace UserManagement.Service.Controllers
         [HttpGet]
         public List<string> GetAllUserNames()
         {
+            var ip = HttpContext.Connection.RemoteIpAddress;
             return userManager.GetAllUserNames();
         }
 
@@ -33,9 +33,7 @@ namespace UserManagement.Service.Controllers
         [HttpGet("partial")]
         public PartialUser GetPartialUser()
         {
-            Int32.TryParse(User.FindFirstValue("jti"), out var id);
-
-            return userManager.GetPartialUser(id);
+            return userManager.GetPartialUser(GetCurrentUserId(User));
         }
         
         // GET api/users/Mantas

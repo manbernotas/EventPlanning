@@ -25,36 +25,43 @@ namespace UserManagement.Service
             services.AddDbContext<DAL.UserContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            var jwtIssuer = Environment.GetEnvironmentVariable("JWTIssuer");
-            var jwtAudience = Environment.GetEnvironmentVariable("JWTAudience");
-            var jwtKey = Environment.GetEnvironmentVariable("JWTKey");
-            var jwtExp = Environment.GetEnvironmentVariable("JWTExpInMin");
-
-            if (jwtIssuer == null || jwtAudience == null || jwtKey == null || jwtExp == null 
-                || !Int32.TryParse(jwtExp, out var jwtExpAfter))
-            {
-                throw new Exception("JWT properties not provided");
-            }
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ClockSkew = TimeSpan.FromMinutes(jwtExpAfter),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtIssuer,
-                    ValidAudience = jwtAudience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
-                };
+                options.TokenValidationParameters = GetTokenValidationParameters();
             });
 
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
+        }
+
+        public TokenValidationParameters GetTokenValidationParameters()
+        {
+            var jwtIssuer = Environment.GetEnvironmentVariable("JWTIssuer");
+            var jwtAudience = Environment.GetEnvironmentVariable("JWTAudience");
+            var jwtKey = Environment.GetEnvironmentVariable("JWTKey");
+            var jwtExp = Environment.GetEnvironmentVariable("JWTExpInMin");
+
+            if (jwtIssuer == null || jwtAudience == null || jwtKey == null || jwtExp == null
+                || !Int32.TryParse(jwtExp, out var jwtExpAfter))
+            {
+                throw new Exception("JWT properties not provided");
+            }
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ClockSkew = TimeSpan.FromMinutes(jwtExpAfter),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtIssuer,
+                ValidAudience = jwtAudience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+            };
+
+            return tokenValidationParameters;
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
