@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using EventPlanning.BL;
 using EventPlanning.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static EventPlanning.Utilities.Utilities;
 
 namespace EventPlanning.service.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]"), Authorize]
     public class EventsController : Controller
     {
         private readonly DAL.EventContext context;
@@ -34,11 +37,11 @@ namespace EventPlanning.service.Controllers
             return eventManager.GetPartialEvent(eventId);
         }
 
-        // GET api/events/user/1/
-        [HttpGet("user/{userId}")]
-        public List<DAL.Event> GetUserEvents(int userId)
+        // GET api/events/user/
+        [HttpGet("user")]
+        public List<DAL.Event> GetUserEvents()
         {
-            return eventManager.GetUserEvents(userId);
+            return eventManager.GetUserEvents(GetCurrentUserId(User));
         }
 
         // GET api/events/search/Pan
@@ -71,7 +74,6 @@ namespace EventPlanning.service.Controllers
         /// <remarks>
         /*
         {
-            "userId": 1,
             "title": "Pandemic challenge",
             "description": "Save the world together",
             "dateFrom": "2017-01-02T00:00:00",
@@ -90,6 +92,8 @@ namespace EventPlanning.service.Controllers
         [HttpPost]
         public IActionResult CreateEvent([FromBody]EventData eventData)
         {
+            eventData.UserId = GetCurrentUserId(User);
+
             return eventManager.CreateEvent(eventData) ? StatusCode(200) : StatusCode(400);
         }
 

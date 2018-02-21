@@ -7,6 +7,10 @@ using System.Text;
 using UserManagement.DAL;
 using UserManagement.Model;
 using UserManagement.DTO;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 
 namespace UserManagement.BL
 {
@@ -16,10 +20,13 @@ namespace UserManagement.BL
 
         private Repository repository;
 
-        public UserManager(UserContext context)
+        private IConfiguration config;
+
+        public UserManager(UserContext context, IConfiguration config)
         {
             this.context = context;
             repository = new Repository(this.context);
+            this.config = config;
         }
 
         /// <summary>
@@ -29,6 +36,27 @@ namespace UserManagement.BL
         public List<string> GetAllUserNames()
         {
             return repository.GetUsers().Select(u => u.UserName).ToList();
+        }
+
+        /// <summary>
+        /// Creates Login record
+        /// </summary>
+        /// <param name="user"></param>
+        public bool CreateLoginRecord(User user, string ip)
+        {
+            if (user == null || ip == null)
+            {
+                return false;
+            }
+
+            var login = new LoginAttempt()
+            {
+                UserId = user.Id,
+                IpAddress = ip,
+                LoginTime = DateTime.Now,
+            };
+
+            return repository.SaveLoginRecord(login);
         }
 
         /// <summary>
@@ -48,7 +76,7 @@ namespace UserManagement.BL
         public PartialUser GetPartialUser(int userId)
         {
             var user = repository.GetUser(userId);
-
+            
             if (user == null)
             {
                 return null;
@@ -106,7 +134,7 @@ namespace UserManagement.BL
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool IsPasswordValid(UserData user)
+        public User IsPasswordValid(UserData user)
         {
             var users = repository.GetUsers();
             var userInDatabase = users.FirstOrDefault(u => u.UserName == user.Name);
@@ -117,11 +145,16 @@ namespace UserManagement.BL
 
                 if (userInDatabase.Password == passwordHash)
                 {
-                    return true;
+                    return new User()
+                    {
+                        Id = GetUserId(user.Name),
+                        UserName = user.Name,
+                        Email = user.Email,
+                    };
                 }
             }
 
-            return false;
+            return null;
         }
 
         /// <summary>

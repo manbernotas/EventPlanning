@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.BL.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.DTO", "UserManagement.DTO\UserManagement.DTO.csproj", "{E6F13242-4DF5-45DE-96A9-46CAE16C2D63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPlanning.Utilities", "Utilities\EventPlanning.Utilities.csproj", "{56CE22AC-E06C-4507-AA3C-0CC4B32212C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Utilities", "Utilities\EventPlanning.Utilities.csproj", "{56CE22AC-E06C-4507-AA3C-0CC4B32212C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
