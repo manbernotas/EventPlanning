@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UserManagement.Model;
 using UserManagement.DAL;
+using Microsoft.Extensions.Configuration;
 
 namespace UserManagement.BL.Tests
 {
@@ -10,6 +11,7 @@ namespace UserManagement.BL.Tests
     {
         private UserManager userManager;
         private UserContext context;
+        private IConfiguration config;
         private DbContextOptions<UserContext> options = new DbContextOptionsBuilder<UserContext>()
                 .UseInMemoryDatabase("TestDatabase")
                 .Options;
@@ -35,7 +37,7 @@ namespace UserManagement.BL.Tests
 
             context.SaveChanges();
 
-            userManager = new UserManager(context);
+            userManager = new UserManager(context, config);
         }
 
         [TestCleanup]
@@ -71,7 +73,7 @@ namespace UserManagement.BL.Tests
                 Password = "test",
             };
 
-            Assert.IsTrue(userManager.IsPasswordValid(user));
+            Assert.IsNotNull(userManager.IsPasswordValid(user));
         }
 
         [TestMethod]
@@ -83,7 +85,7 @@ namespace UserManagement.BL.Tests
                 Password = "test2",
             };
 
-            Assert.IsFalse(userManager.IsPasswordValid(user));
+            Assert.IsNull(userManager.IsPasswordValid(user));
         }
 
         [TestMethod]
@@ -94,7 +96,7 @@ namespace UserManagement.BL.Tests
                 Name = "Test1",
             };
 
-            Assert.IsFalse(userManager.IsPasswordValid(user2));
+            Assert.IsNull(userManager.IsPasswordValid(user2));
         }
 
         [TestMethod]

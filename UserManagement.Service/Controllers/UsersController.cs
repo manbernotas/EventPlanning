@@ -3,19 +3,23 @@ using Microsoft.AspNetCore.Mvc;
 using UserManagement.Model;
 using UserManagement.BL;
 using UserManagement.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
+using System;
 
 namespace UserManagement.Service.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]"), Authorize]
     public class UsersController : Controller
     {
         private readonly DAL.UserContext context;
         private UserManager userManager;
 
-        public UsersController(DAL.UserContext context)
+        public UsersController(DAL.UserContext context, IConfiguration config)
         {
             this.context = context;
-            userManager = new UserManager(this.context);
+            userManager = new UserManager(this.context, config);
         }
 
         // GET api/users
@@ -25,11 +29,13 @@ namespace UserManagement.Service.Controllers
             return userManager.GetAllUserNames();
         }
 
-        // GET api/users/1/partial
-        [HttpGet("{userId}/partial")]
-        public PartialUser GetPartialUser(int userId)
+        // GET api/users/partial
+        [HttpGet("partial")]
+        public PartialUser GetPartialUser()
         {
-            return userManager.GetPartialUser(userId);
+            Int32.TryParse(User.FindFirstValue("jti"), out var id);
+
+            return userManager.GetPartialUser(id);
         }
         
         // GET api/users/Mantas
@@ -54,7 +60,7 @@ namespace UserManagement.Service.Controllers
         }
         */
         /// </remarks>
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         public IActionResult CreateUser([FromBody]UserData user)
         {
             return userManager.CreateUser(user) ? StatusCode(200) : StatusCode(400);

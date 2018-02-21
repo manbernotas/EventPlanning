@@ -42,5 +42,20 @@ namespace UserManagement.DAL
         {
             return context.User.SingleOrDefault(u => u.Id == userId);
         }
+
+        public bool SaveLoginRecord(LoginLog login)
+        {
+            try
+            {
+                context.LoginLog.Add(login);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

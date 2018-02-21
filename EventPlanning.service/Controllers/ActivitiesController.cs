@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using EventPlanning.BL;
 using EventPlanning.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPlanning.service.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]"), Authorize]
     public class ActivitiesController : Controller
     {
         private readonly DAL.EventContext context;

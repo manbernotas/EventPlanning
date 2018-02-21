@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using EventPlanning.BL;
 using EventPlanning.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPlanning.service.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]"), Authorize]
     public class EventsController : Controller
     {
         private readonly DAL.EventContext context;
@@ -34,11 +36,16 @@ namespace EventPlanning.service.Controllers
             return eventManager.GetPartialEvent(eventId);
         }
 
-        // GET api/events/user/1/
-        [HttpGet("user/{userId}")]
+        // GET api/events/user/
+        [HttpGet("user")]
         public List<DAL.Event> GetUserEvents(int userId)
         {
-            return eventManager.GetUserEvents(userId);
+            if (!Int32.TryParse(User.FindFirstValue("jti"), out var id))
+            {
+                return null;
+            }
+
+            return eventManager.GetUserEvents(id);
         }
 
         // GET api/events/search/Pan
@@ -90,6 +97,9 @@ namespace EventPlanning.service.Controllers
         [HttpPost]
         public IActionResult CreateEvent([FromBody]EventData eventData)
         {
+            Int32.TryParse(User.FindFirstValue("jti"), out var id);
+            eventData.UserId = id;
+
             return eventManager.CreateEvent(eventData) ? StatusCode(200) : StatusCode(400);
         }
 
