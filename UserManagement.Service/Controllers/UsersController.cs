@@ -5,7 +5,7 @@ using UserManagement.BL;
 using UserManagement.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
-using static UserManagement.Utilities.Utilities;
+using static EventPlanning.Utilities.Utilities;
 
 namespace UserManagement.Service.Controllers
 {
